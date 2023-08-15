@@ -1,0 +1,20 @@
+.scrollToTopBtn {
+    position: sticky !important;
+    top: calc(100vh - 100px);
+    left: calc(100vw - 72px);
+    z-index: 3;
+    display: flex;
+    width: 32px;
+    border: none;
+}
+
+.arrowUp {
+    width: 0;
+    height: 0;
+    margin: auto;
+
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    transition: all 250ms linear;
+}
