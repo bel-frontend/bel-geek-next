@@ -64,7 +64,7 @@ export const EpisodePreview = ({
           </div>
         </div>
         <div className={style.alfa}></div>
-        {/* <MetaData meta={{ ...meta }} likes={likes} articleId={id} url={url} /> */}
+        <MetaData meta={{ ...meta }} likes={likes} articleId={id} url={url} />
       </>
     </article>
   );

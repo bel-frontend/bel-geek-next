@@ -5,20 +5,19 @@ import {
   saveLikeToLocalStorage,
   removeLikeFromLocalStorage,
 } from "@/modules/firebase";
+
 import { setLikedRequest, removeLikeRequest } from "@/modules/artickles";
 import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "@/modules/EventEmitter";
 import HeardIcon from "./components/HeardIcon";
 
 import style from "./style.module.scss";
 
 export const LikeButton = ({
   articleId,
-  className,
   likesCount,
 }: {
   articleId: string;
-  className?: string;
   likesCount: number;
 }) => {
   const dispatch = useDispatch();

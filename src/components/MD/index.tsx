@@ -2,7 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
-import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import CodeHightLihght from "./CodeHightLihght";
 import style from "./style.module.scss";
 
 export const MD = ({ children, className = "" }: any) => {
@@ -12,14 +12,11 @@ export const MD = ({ children, className = "" }: any) => {
       remarkPlugins={[remarkGfm]}
       components={{
         code({ node, inline, className, children, ...props }) {
-          return !inline && typeof window === "object" ? (
-            <SyntaxHighlighter language="javascript" style={darcula}>
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
-          ) : (
-            <code className={className} {...props}>
-              {children}
-            </code>
+          return (
+            <CodeHightLihght
+              code={String(children).replace(/\n$/, "")}
+              language="javascript"
+            />
           );
         },
       }}
