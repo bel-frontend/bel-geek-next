@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-import classnames from "classnames";
 import {
   checkArtickeIsLiked,
   saveLikeToLocalStorage,

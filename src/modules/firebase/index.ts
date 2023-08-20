@@ -12,11 +12,14 @@ const firebaseConfig = {
   measurementId: "G-REGR3FB1CP",
 };
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
 
-const analytics = getAnalytics(app);
+if (typeof window !== "undefined") {
+  const app = initializeApp(firebaseConfig);
 
-const database = getDatabase(app);
+  const analytics = getAnalytics(app);
+
+  const database = getDatabase(app);
+}
 
 export const checkArtickeIsLiked = (artickleId: any) => {
   const items =

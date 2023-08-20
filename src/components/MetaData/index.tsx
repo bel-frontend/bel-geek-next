@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import { LikeButton, Tag } from "@/components";
@@ -19,7 +20,7 @@ export const MetaData = ({
     <>
       <div className={style.episode_meta}>
         {showReadButton ? (
-          <Link to={url}>
+          <Link href={url}>
             <Button
               variant="contained"
               color="primary"

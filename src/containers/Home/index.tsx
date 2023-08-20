@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { EpisodePreview } from "./components/EpisodePreview/";
 import style from "./style.module.scss";
-// import { getCurrentUserSelector } from 'modules/auth';
 import { USER_ROLES } from "@/constants/users";
 
-const Home = ({
+const Home = async ({
   route: { userIsAuth },
 
   location: { search },
@@ -16,7 +15,12 @@ const Home = ({
   route: { userIsAuth?: boolean };
   [key: string]: any;
 }) => {
-  const articles: any[] = [];
+  // const articles: any[] = [];
+
+  const { articles } = await fetch(
+    "https://api.bel-frontend.online/artickles"
+  ).then((res) => res.json());
+  console.log(articles);
 
   const currentUser: any = {
     role: USER_ROLES.SUPERADMIN,
@@ -26,7 +30,7 @@ const Home = ({
     user_avatar: {},
   };
 
-  const preparedArticles = React.useMemo(() => {
+  const preparedArticles = (() => {
     const pinned = articles.filter((i: any) => i?.meta?.isPinned); //TODO need move that to BE(sort by pinned)
     const non_pinned = articles.filter((i: any) => !i?.meta?.isPinned);
     return [...pinned, ...non_pinned].filter(
@@ -35,7 +39,7 @@ const Home = ({
         (!i.isActive && currentUser?.user_id === i?.meta?.user_id) ||
         currentUser.role === USER_ROLES.SUPERADMIN
     );
-  }, []);
+  })();
 
   return (
     <>
@@ -70,7 +74,6 @@ const Home = ({
               meta ? (
                 <EpisodePreview
                   currentUser={currentUser}
-                  history={history}
                   key={index}
                   userIsAuth={userIsAuth}
                   content={content}

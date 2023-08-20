@@ -1,18 +1,18 @@
-import * as api_helpers from 'react_redux_api';
-import { createAction } from 'redux-actions';
+import ApiRoutes from "@/modules/apiRoutes";
+import * as api_helpers from "react_redux_api";
+import { createAction } from "redux-actions";
 import {
-    call,
-    put,
-    takeEvery,
-    select,
-    debounce,
-    all,
-} from 'redux-saga/effects';
+  call,
+  put,
+  takeEvery,
+  select,
+  debounce,
+  all,
+} from "redux-saga/effects";
 
-const modules = 'artickles';
+const modules = "artickles";
 const {
-    helpers: { actionCreator, apiSelector },
-    modules: { ApiRoutes },
+  helpers: { actionCreator, apiSelector },
 } = api_helpers;
 
 const apiRoutes = new ApiRoutes();
@@ -39,52 +39,52 @@ export const sendErrorRequest = actionCreator(SEND_ERRORR_REQUEST);
 export const searchArticle = createAction(SEARCH_ARTICLE);
 
 apiRoutes.add(GET_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
-    url: `/artickles`,
-    method: 'get',
-    params: params,
+  url: `/artickles`,
+  method: "get",
+  params: params,
 }));
 
 apiRoutes.add(SEND_ERRORR_REQUEST, ({ ...data } = {}) => ({
-    url: `/error-artickle`,
-    method: 'post',
-    data: data,
+  url: `/error-artickle`,
+  method: "post",
+  data: data,
 }));
 
 apiRoutes.add(GET_ARTICKLE_BY_ID_REQUEST, ({ id }: { id: any }) => ({
-    url: `/artickles/${id}`,
-    method: 'get',
+  url: `/artickles/${id}`,
+  method: "get",
 }));
 
 apiRoutes.add(UPDATE_ARTICLE_REQUEST, ({ id, ...data }: { id: any }) => ({
-    url: `/artickles/${id}`,
-    method: 'put',
-    data: data,
+  url: `/artickles/${id}`,
+  method: "put",
+  data: data,
 }));
 
 apiRoutes.add(CREATE_ARTICLE_REQUEST, ({ ...data }: { id: any }) => ({
-    url: `/artickles`,
-    method: 'post',
-    data: data,
+  url: `/artickles`,
+  method: "post",
+  data: data,
 }));
 
 apiRoutes.add(SET_LIKE_REQUEST, ({ id }: { id: any }) => ({
-    url: `/like/${id}`,
-    method: 'put',
+  url: `/like/${id}`,
+  method: "put",
 }));
 
 apiRoutes.add(REMOVE_LIKE_REQUEST, ({ id }: { id: any }) => ({
-    url: `/like/${id}`,
-    method: 'delete',
+  url: `/like/${id}`,
+  method: "delete",
 }));
 
 export function* searchSaga(action: any): any {
-    yield put(
-        getArticklesRequest(action?.payload ? { search: action?.payload } : {}),
-    );
+  yield put(
+    getArticklesRequest(action?.payload ? { search: action?.payload } : {})
+  );
 }
 
 export function* artickleModuleSaga(dispatch: any) {
-    yield debounce(300, SEARCH_ARTICLE, searchSaga);
+  yield debounce(300, SEARCH_ARTICLE, searchSaga);
 }
 
 export const getArticklesSelector = apiSelector(GET_ARTICKLES_REQUEST);

@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+        'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-size: 16px;
+    color: #333333;
+    -webkit-tap-highlight-color: #0085a1;
+}
+
+@font-face {
+    font-weight: normal;
+    font-style: normal;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+    color: #d63384;
+}
+
+p {
+    line-height: 1.5;
+    margin: 20px 0;
+}
+p a {
+    text-decoration: none !important;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+.header {
+    color: #eeeeee;
+}
+
+a {
+    color: #0085a1;
+    text-decoration: none !important;
+}
+a:hover,
+a:focus {
+    color: #0c93e4;
+}
+a img:hover,
+a img:focus {
+    cursor: zoom-in;
+}
+blockquote {
+    color: #777777;
+    font-style: italic;
+}
+hr.small {
+    max-width: 100px;
+    margin: 15px auto;
+    border-width: 2px;
+    border-color: white;
+    opacity: 0.25;
+}
+::-moz-selection {
+    color: white;
+    text-shadow: none;
+    background: #0085a1;
+}
+::selection {
+    color: white;
+    text-shadow: none;
+    background: #0085a1;
+}
+img::selection {
+    color: white;
+    background: transparent;
+}
+img::-moz-selection {
+    color: white;
+    background: transparent;
+}
+span {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+        'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+.author {
+    font-size: 18px;
+    font-style: italic;
+}
+.date-article {
+    font-size: 18px;
+    font-style: italic;
+    color: #777;
+}
+.article {
+    max-height: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+}
+
+.episode img {
+    max-width: 100%;
+}
+.episode {
+    max-width: 100%;
+    margin-bottom: 48px;
+    min-height: 450px;
+}
+.content {
+    max-width: 100%;
+}
+.content p {
+    width: 100%;
+}
+
+.articlePage {
+    font-size: 1.1rem;
+}
