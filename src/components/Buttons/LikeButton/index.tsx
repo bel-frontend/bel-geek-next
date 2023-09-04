@@ -8,7 +8,7 @@ import {
 
 import { setLikedRequest, removeLikeRequest } from "@/modules/artickles";
 import { Button } from "@mui/material";
-import { useDispatch } from "@/modules/EventEmitter";
+import { useDispatch } from "@/modules/store";
 import HeardIcon from "./components/HeardIcon";
 
 import style from "./style.module.scss";

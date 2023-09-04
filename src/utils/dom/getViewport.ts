@@ -2,8 +2,14 @@ import { endpoints } from "@/constants/viewport";
 const getViewport = () => {
   let result;
 
-  const width = window.innerWidth || document.body.clientWidth;
-  const height = window.innerHeight || document.body.clientHeight;
+  const width =
+    typeof window === "object"
+      ? window?.innerWidth || document?.body?.clientWidth
+      : 0;
+  const height =
+    typeof window === "object"
+      ? window?.innerHeight || document?.body.clientHeight
+      : 0;
   // |0px     600px    960px    1280px   1920px
   if (width > endpoints.lg) {
     result = {

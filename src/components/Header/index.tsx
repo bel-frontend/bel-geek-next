@@ -19,6 +19,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import { useFormik } from "formik";
 
+import { useDispatch } from "@/modules/store";
 import { searchArticle } from "@/modules/artickles";
 
 import { logoutAction } from "@/modules/auth";
@@ -33,7 +34,7 @@ export const Header = ({
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const dispatch = useDispatch();
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     onSubmit: ({ text }) => {
       history.push(`/`);
