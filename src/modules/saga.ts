@@ -37,7 +37,7 @@ if (process.env.NODE_ENV == 'development') {
 
 // TODO:  need refactoring
 
-function* rootSaga(dispatch: any) {
+function* rootSaga(dispatch: any, action?: any) {
     yield all([
         apiWatchRequest({
             additiveCallback: function* ({

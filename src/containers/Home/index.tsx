@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { EpisodePreview } from './components/EpisodePreview/';
 import style from './style.module.scss';
 import { USER_ROLES } from '@/constants/users';
-import { useDispatch, useSelector } from '@/modules/store';
+import { useDispatch, store, useSelector } from '@/modules/store';
 import { getArticklesRequest, getArticklesSelector } from '@/modules/artickles';
 
 const Home = ({
@@ -27,6 +27,7 @@ const Home = ({
     };
 
     const dispatch = useDispatch();
+    console.log('dispatch', dispatch, store);
 
     dispatch(
         getArticklesRequest(

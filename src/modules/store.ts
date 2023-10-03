@@ -1,28 +1,48 @@
-// import createStore from './EventEmitter';
-// import { createSagaMiddleware } from './EventEmitter';
-import createSagaMiddleware from 'redux-saga';
-
-import storage from 'redux-persist/lib/storage';
-import { persistStore, persistReducer } from 'redux-persist';
-import { createStore, applyMiddleware, compose } from '@/modules/redux';
 import rootReducer from './reducers';
+import { applyMiddleware, compose } from '@/modules/redux';
+import createSagaMiddleware from 'redux-saga';
 import saga from './saga';
 
-// const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
+interface EventEmitter {
+    on: (event: string, listener: Function) => void;
+    emit: (event: string, payload: any) => void;
+}
 
-//@ts-ignore
-// const store = createStore(reducer, { count: 0 }, sagaMiddleware);
+const createEventEmitter = (): EventEmitter => {
+    let listeners: { [key: string]: Function[] } = {};
 
-// store.subscribe(() => {
-// console.log(store.getState());
-// });
+    const on = (event: string, listener: Function): void => {
+        listeners[event] = (listeners[event] || []).concat(listener);
+    };
 
-// @ts-ignore
-// sagaMiddleware.run(saga);
+    const emit = (event: string, payload: any): void => {
+        (listeners[event] || []).forEach((listener) => listener(payload));
+    };
 
-// store.dispatch({ type: 'INCREMENT' });
+    return {
+        on,
+        emit,
+    };
+};
 
-const createStoreApp = () => {
+interface Action {
+    type: string;
+    [key: string]: any;
+}
+
+interface Store<S, A> {
+    getState: () => S;
+    dispatch: (action: A) => void;
+    on: (event: string, listener: Function) => void;
+}
+const composeEnhancers = compose;
+
+const createStore = <S, A extends Action, T>(
+    reducer: (state: S, action: A) => S,
+    initialState: S,
+    enhancer?: T,
+): Store<S, A> => {
     const middleware = [];
     const enhancers = [];
 
@@ -35,34 +55,42 @@ const createStoreApp = () => {
 
     const composeEnhancers = compose;
 
-    const persistConfig = {
-        key: 'root',
-        storage: storage,
-        throttle: 100,
-        version: 0,
-        whitelist: ['auth', 'locale', 'sidebar', 'cookies'],
+    let state = initialState;
+    const events = createEventEmitter();
+    const getState = (): S => state;
+
+    const dispatch = (action: A): void => {
+        state = reducer(state, action);
+        console.log('state', state);
+
+        events.emit('stateChanged', state);
     };
-    // Middleware: Redux Persist Persisted Reducer
-    const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-    // Redux: Store
-    const store = createStore(persistedReducer, composeEnhancers(...enhancers));
+    if (typeof enhancer === 'function') {
+        return enhancer(createStore)(reducer, initialState);
+    }
 
-    // kick off root saga
-    sagaMiddleware.run(saga, store.dispatch);
-
-    const persistor = persistStore(store);
-
-    return { store, persistor };
+    return {
+        getState,
+        dispatch,
+        on: events.on,
+    };
 };
 
-export const { store, persistor } = createStoreApp();
+export const store = createStore(
+    rootReducer,
+    //@ts-ignore
+    {},
+
+    composeEnhancers(applyMiddleware(sagaMiddleware)),
+);
+
+sagaMiddleware.run(saga, store.dispatch);
 
 export const useDispatch = () => {
     return store.dispatch;
 };
 
-export const useSelector = (selector: (state: any) => any) => {
-    const state = store.getState();
-    return { ...selector(state) };
+export const useSelector = (selector: any) => {
+    return selector(store.getState());
 };
