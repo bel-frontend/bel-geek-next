@@ -16,7 +16,7 @@ const Home = ({
     route: { userIsAuth?: boolean };
     [key: string]: any;
 }) => {
-    const articles: any[] = [];
+    // const articles: any[] = [];
 
     const currentUser: any = {
         role: USER_ROLES.SUPERADMIN,
@@ -27,26 +27,30 @@ const Home = ({
     };
 
     const dispatch = useDispatch();
-    console.log('dispatch', dispatch, store);
+    // const [arti, setState] = React.useState<any>();
 
     dispatch(
         getArticklesRequest(
             {},
             {
                 onSuccess: (data: any) => {
-                    console.log('data', data);
+                    // console.log('data', data);
+
+                    return true;
                 },
             },
         ),
     );
 
-    const { artickles } = useSelector(getArticklesSelector);
+    const { articles } = useSelector(getArticklesSelector);
 
-    console.log('artickles', artickles);
+    // console.log('artickles', articles);
 
     const preparedArticles = (() => {
-        const pinned = articles.filter((i: any) => i?.meta?.isPinned); //TODO need move that to BE(sort by pinned)
-        const non_pinned = articles.filter((i: any) => !i?.meta?.isPinned);
+        const pinned = (articles || []).filter((i: any) => i?.meta?.isPinned); //TODO need move that to BE(sort by pinned)
+        const non_pinned = (articles || []).filter(
+            (i: any) => !i?.meta?.isPinned,
+        );
         return [...pinned, ...non_pinned].filter(
             (i) =>
                 i.isActive ||
