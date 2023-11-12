@@ -22,8 +22,6 @@ function RootLayout({
         [key: string]: string | string[] | undefined;
     };
 }) {
-    console.log('RootLayout', props);
-
     return (
         <html lang="en">
             <body className={inter.className}>

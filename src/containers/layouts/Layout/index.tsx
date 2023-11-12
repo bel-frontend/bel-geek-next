@@ -6,23 +6,23 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { useSelector } from 'react-redux';
 import { currentUserIsAuth } from '@/modules/auth';
 import { getViewport } from '@/modules/viewport';
+import { useRouter } from 'next/navigation';
 
 export const Layout = ({ children, ...props }: any) => {
     const {
         showHeader = true,
         isMobile = false,
         showFooter = true,
-        maxWidth = 'md',
+        maxWidth = 'xl',
     } = props;
     const userIsAuth = useSelector(currentUserIsAuth);
     const viewPort = useSelector(getViewport);
-
+    const history = useRouter();
     return (
         <>
             {showHeader !== false ? (
                 <Header
                     isMobile={isMobile}
-                    location={location}
                     history={history}
                     userIsAuth={userIsAuth}
                 />

@@ -11,10 +11,11 @@ import Switch from '@mui/material/Switch';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/navigation';
 
-import { USER_ROLES } from 'constants/users';
+import { USER_ROLES } from '@/constants/users';
 
-import { MD, UploadFile } from 'components';
+import { MD, UploadFile } from '@/components';
 
 import { useHooks } from './hooks';
 import { UploadController } from './components/UploadController';
@@ -24,16 +25,9 @@ import style from './style.module.scss';
 
 const mdParser = new MarkdownIt({ typographer: true });
 
-const Editor = ({
-    history,
-    match: {
-        params: { id },
-    },
-    ...props
-}: {
-    history: any;
-    match: { params: { id: number | string } };
-}) => {
+const Editor = ({ id, ...props }: { id: string | number }) => {
+    const history = useRouter();
+
     const {
         handleSubmit,
         values,
@@ -49,8 +43,6 @@ const Editor = ({
         urls,
         onDelete,
     } = useHooks({ history, id });
-
-    console.log(currentUser);
 
     return (
         <Box>
@@ -191,8 +183,10 @@ const Editor = ({
                                 </label>
                             </Box>
                             <MdEditor
-                                renderHTML={(text) => mdParser.render(text)}
-                                onChange={({ text }) =>
+                                renderHTML={(text: string) =>
+                                    mdParser.render(text)
+                                }
+                                onChange={({ text }: { text: string }) =>
                                     setFieldValue('content', text)
                                 }
                                 value={values.content}
@@ -216,7 +210,7 @@ const Editor = ({
                                     variant="outlined"
                                     className="mt-5"
                                     color="primary"
-                                    onClick={() => history.goBack()}
+                                    onClick={() => history.back()}
                                 >
                                     Скасаваць
                                 </Button>

@@ -1,7 +1,8 @@
-import React from "react";
+import React from 'react';
+import Contacts from '@/containers/Contacts';
 
 const page = () => {
-  return <div>page</div>;
+    return <Contacts />;
 };
 
 export default page;

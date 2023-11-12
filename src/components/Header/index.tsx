@@ -25,9 +25,7 @@ import { logoutAction } from '@/modules/auth';
 import style from './style.module.scss';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-export const Header = ({ userIsAuth, isMobile, location: { search } }: any) => {
-    console.log(userIsAuth, 'userIsAuth');
-
+export const Header = ({ userIsAuth, isMobile }: any) => {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

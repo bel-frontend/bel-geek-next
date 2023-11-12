@@ -3,23 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import moment from 'moment';
-import showNotification from 'modules/notification';
+import showNotification from '@/modules/notification';
 
 import {
     updateArtickleRequest,
     createArtickleRequest,
     getArtickleByIdRequest,
     getArtickleSelector,
-} from 'modules/artickles';
+} from '@/modules/artickles';
 
 import {
     uploadImageForArticleRequest,
     deleteImageRequest,
     getImagesRequest,
     getImagesSelector,
-} from 'modules/files';
+} from '@/modules/files';
 
-import { getCurrentUserSelector } from 'modules/auth';
+import { getCurrentUserSelector } from '@/modules/auth';
 
 const validationSchema = yup.object({
     title: yup.string().required(),
