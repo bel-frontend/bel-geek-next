@@ -21,25 +21,19 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { searchArticle } from '@/modules/artickles';
-
 import { logoutAction } from '@/modules/auth';
 import style from './style.module.scss';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-export const Header = ({
-    userIsAuth,
-    isMobile,
-    history,
-    location: { search },
-}: any) => {
+export const Header = ({ userIsAuth, isMobile, location: { search } }: any) => {
+    console.log(userIsAuth, 'userIsAuth');
+
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const pathname = usePathname();
     const searchParams = useSearchParams();
     const searchParam = searchParams.get('seacrhText');
 

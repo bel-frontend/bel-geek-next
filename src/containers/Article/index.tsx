@@ -1,3 +1,4 @@
+import type { Metadata, ResolvingMetadata } from 'next';
 import React from 'react';
 import Link from 'next/link';
 
@@ -17,6 +18,38 @@ import { Comments } from './components/Comments';
 
 import style from './style.module.scss';
 
+type Props = {
+    params: { id: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata,
+): Promise<Metadata> {
+    // read route params
+    const id = params.id;
+
+    // fetch data
+    const product = await getDataWrapper(
+        {
+            requestAction: getArtickleByIdRequest,
+            resultSelector: getArtickleSelector,
+        },
+        { id },
+    );
+
+    // optionally access and extend (rather than replace) parent metadata
+    const previousImages = (await parent).openGraph?.images || [];
+    console.log('previousImages', previousImages);
+
+    return {
+        title: product.title,
+        openGraph: {
+            images: ['/some-specific-page-image.jpg', ...previousImages],
+        },
+    };
+}
 const Article = async ({
     match: {
         params: { id },
