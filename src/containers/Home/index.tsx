@@ -5,19 +5,21 @@ import { EpisodePreview } from './components/EpisodePreview/';
 import style from './style.module.scss';
 import { USER_ROLES } from '@/constants/users';
 import { useDispatch, store, useSelector } from '@/modules/store';
-import { getArticklesRequest, getArticklesSelector } from '@/modules/artickles';
+import {
+    getArticklesRequest,
+    getArticklesSelector,
+    searchArticle,
+} from '@/modules/artickles';
 
-const Home = ({
+import { getDataWrapper } from '@/modules/apiRoutes';
+
+const Home = async ({
     route: { userIsAuth },
-
-    location: { search },
-    ...props
+    searchParams: { searchText },
 }: {
     route: { userIsAuth?: boolean };
     [key: string]: any;
 }) => {
-    // const articles: any[] = [];
-
     const currentUser: any = {
         role: USER_ROLES.SUPERADMIN,
         user_id: 1,
@@ -26,25 +28,13 @@ const Home = ({
         user_avatar: {},
     };
 
-    const dispatch = useDispatch();
-    // const [arti, setState] = React.useState<any>();
-
-    dispatch(
-        getArticklesRequest(
-            {},
-            {
-                onSuccess: (data: any) => {
-                    // console.log('data', data);
-
-                    return true;
-                },
-            },
-        ),
+    const { articles } = await getDataWrapper(
+        {
+            requestAction: getArticklesRequest,
+            resultSelector: getArticklesSelector,
+        },
+        { search: searchText },
     );
-
-    const { articles } = useSelector(getArticklesSelector);
-
-    // console.log('artickles', articles);
 
     const preparedArticles = (() => {
         const pinned = (articles || []).filter((i: any) => i?.meta?.isPinned); //TODO need move that to BE(sort by pinned)

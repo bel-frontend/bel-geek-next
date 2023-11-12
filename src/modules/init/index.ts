@@ -1,7 +1,6 @@
 import get from 'lodash/get';
 import { createAction } from 'redux-actions';
 import { all, put, select, call, takeLatest, delay } from 'redux-saga/effects';
-import { store } from '@/modules/store';
 import * as api_helpers from 'react_redux_api';
 const {
     helpers: { actionCreator, apiSelector },
@@ -28,7 +27,7 @@ export const isRehydrated = (state: any) => state._persist.rehydrated;
 export const initModuleSaga = function* (dispatch: any) {
     yield all([
         // @ts-ignore
-        takeLatest([store?.initAcion], initDataSaga, dispatch),
+        takeLatest([INIT_DATA], initDataSaga, dispatch),
 
         // takeLatest([INIT_DATA], getWorkingTimeSaga, dispatch),
         // takeLatest([SAVE_CREDENTIALS], redirectToInitSaga, dispatch),

@@ -1,7 +1,7 @@
-import rootReducer from './reducers';
+import rootReducer from '../reducers';
 import { applyMiddleware, compose } from '@/modules/redux';
 import createSagaMiddleware from 'redux-saga';
-import saga from './saga';
+import saga from '../saga';
 import config from '@/config/dev';
 
 const composeEnhancers =

@@ -1,11 +1,7 @@
 // "use client";
-import React from "react";
-import Image from "next/image";
-import styles from "./page.module.scss";
-import HomePage from "@/containers/Home";
+import React from 'react';
+import HomePage from '@/containers/Home';
 
-export default function Home({ ...props }) {
-  console.log(props, "home");
-
-  return <HomePage route={{ userIsAuth: true }} location={{ search: "" }} />;
+export default async function Home({ ...props }) {
+    return <HomePage route={{ userIsAuth: true }} {...props} />;
 }

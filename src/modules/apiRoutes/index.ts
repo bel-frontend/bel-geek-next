@@ -1,29 +1,40 @@
-class ApiRoutes {
-  private static instance: ApiRoutes;
-  public routes: { [key: string]: Function };
+import { useDispatch, store, useSelector } from '@/modules/store/serverStore';
 
-  constructor() {
-    this.routes = {};
-  }
-
-  public static getInstance(): ApiRoutes {
-    if (!ApiRoutes.instance) {
-      ApiRoutes.instance = new ApiRoutes();
-    }
-    return ApiRoutes.instance;
-  }
-
-  public add(key: string, func: Function): void {
-    if (typeof func === "function") {
-      if (key in this.routes) {
-        console.warn("Check your key! This key is already in use.");
-      }
-      this.routes[key] = func;
-    } else {
-      throw new Error("Check your arguments");
-    }
-  }
+interface getDataProps {
+    requestAction: any;
+    onSuccess?: any;
+    onFailure?: any;
+    resultSelector: any;
 }
 
-const apiRoutes = ApiRoutes.getInstance();
-export { apiRoutes, ApiRoutes as default };
+export const getDataWrapper = async (
+    { requestAction, onSuccess, onFailure, resultSelector }: getDataProps,
+    arg: any = {},
+) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const dispatch = useDispatch();
+
+    const promise = new Promise((resolve, reject) => {
+        dispatch(
+            requestAction(arg, {
+                onSuccess: (data: any) => {
+                    if (onSuccess) onSuccess(data);
+                    resolve(data);
+
+                    return true;
+                },
+                onFailure: (error: any) => {
+                    if (onFailure) onFailure(error);
+                    reject(error);
+                    return true;
+                },
+            }),
+        );
+    });
+
+    return promise.then((data: any) => {
+        const res = useSelector(resultSelector);
+
+        return res;
+    });
+};
