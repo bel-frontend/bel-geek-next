@@ -1,86 +1,43 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import Link from 'next/link';
 
 import classnames from 'classnames';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import EditIcon from '@mui/icons-material/Edit';
+import { Grid } from '@mui/material';
 
-import { getArtickleByIdRequest, getArtickleSelector } from 'modules/artickles';
-import { getCurrentUserSelector } from 'modules/auth';
-
-import { MetaData, MD } from 'components';
-import { LikeButton, Tag } from 'components';
-import { USER_ROLES } from 'constants/users';
+import {
+    getArtickleByIdRequest,
+    getArtickleSelector,
+} from '@/modules/artickles';
+import { getDataWrapper } from '@/modules/apiRoutes';
+import { MetaData, MD } from '@/components';
+import { LikeButton, Tag } from '@/components';
 import Error from './components/Error';
-import BF from 'assets/images/default.jpg';
-
-import style from './style.module.scss';
 import { Comments } from './components/Comments';
 
-const Article = ({
+import style from './style.module.scss';
+
+const Article = async ({
     match: {
         params: { id },
     },
-    history,
-    route: { userIsAuth },
-    ...props
 }: {
     match: { params: { id: string } };
-    history: any;
-    route: { userIsAuth?: boolean };
 }) => {
-    const dispatch = useDispatch();
-    const currentUser: any = useSelector(getCurrentUserSelector);
-    const article: any = useSelector(getArtickleSelector);
-
-    React.useEffect(() => {
-        if (id) {
-            dispatch(getArtickleByIdRequest({ id }));
-        }
-    }, [id]);
+    const article = await getDataWrapper(
+        {
+            requestAction: getArtickleByIdRequest,
+            resultSelector: getArtickleSelector,
+        },
+        { id },
+    );
 
     const title = article?.meta?.title;
-    const description = article?.meta?.description ?? article?.meta?.title;
 
     return article ? (
         <>
-            <Helmet>
-                <title>{title}</title>
-                <meta name="description" content={description} />
-                <meta
-                    property="og:url"
-                    content={`https://bel-frontend.online/article/${id}`}
-                />
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content={title} />
-                <meta property="og:description" content={description} />
-                <meta
-                    property="og:image"
-                    content={`https://bel-frontend.online${BF}`}
-                />
-
-                <meta
-                    name="twitter:card"
-                    content={`https://bel-frontend.online${BF}`}
-                />
-                <meta property="twitter:domain" content="bel-frontend.online" />
-                <meta
-                    property="twitter:url"
-                    content={`https://bel-frontend.online/article/${id}`}
-                />
-                <meta name="twitter:title" content={title} />
-                <meta name="twitter:description" content={description} />
-                <meta
-                    name="twitter:image"
-                    content={`https://bel-frontend.online${BF}`}
-                />
-            </Helmet>
             <div className="articlePage">
-                <Link to="/">Галоўная</Link> <span>{'>'} </span>
+                <Link href="/">Галоўная</Link> <span>{'>'} </span>
                 <span>{title}</span>
             </div>
 
@@ -112,35 +69,10 @@ const Article = ({
                     <Box marginTop={2}></Box>
                     <Grid marginTop={2} spacing={2} container>
                         <Grid item>
-                            <Error
-                                userIsAuth={userIsAuth}
-                                currentUser={currentUser}
-                                artickleId={id}
-                            />
-                        </Grid>
-                        <Grid item>
-                            {userIsAuth &&
-                            (currentUser?.user_id === article?.meta?.user_id ||
-                                currentUser.role === USER_ROLES.SUPERADMIN) ? (
-                                <Button
-                                    variant="outlined"
-                                    // sx={{ ml: 1 }}
-                                    color="primary"
-                                    className={style.editButton}
-                                    onClick={() => {
-                                        history.push(`/editor/${id}`);
-                                    }}
-                                    endIcon={<EditIcon />}
-                                >
-                                    Рэдагаваць
-                                </Button>
-                            ) : null}
+                            <Error artickleId={id} />
                         </Grid>
                         <Grid item xs={12}>
-                            <Comments
-                                userIsAuth={userIsAuth}
-                                articleId={id}
-                            ></Comments>
+                            <Comments articleId={id}></Comments>
                         </Grid>
                     </Grid>
                 </article>

@@ -16,9 +16,11 @@ import style from './style.module.scss';
 export const LikeButton = ({
     articleId,
     likesCount,
+    className = '',
 }: {
     articleId: string;
     likesCount: number;
+    className?: string;
 }) => {
     const dispatch = useDispatch();
     const [likes, setLikes] = React.useState(likesCount);
@@ -63,6 +65,7 @@ export const LikeButton = ({
             size="small"
             onClick={onClick}
             disableElevation
+            className={className}
         >
             <HeardIcon />
             <span className={style.count_likes}>{likes}</span>

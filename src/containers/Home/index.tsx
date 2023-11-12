@@ -4,12 +4,8 @@ import Box from '@mui/material/Box';
 import { EpisodePreview } from './components/EpisodePreview/';
 import style from './style.module.scss';
 import { USER_ROLES } from '@/constants/users';
-import { useDispatch, store, useSelector } from '@/modules/store';
-import {
-    getArticklesRequest,
-    getArticklesSelector,
-    searchArticle,
-} from '@/modules/artickles';
+
+import { getArticklesRequest, getArticklesSelector } from '@/modules/artickles';
 
 import { getDataWrapper } from '@/modules/apiRoutes';
 

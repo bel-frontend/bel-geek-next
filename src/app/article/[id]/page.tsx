@@ -1,7 +1,25 @@
-import React from "react";
+import React from 'react';
+import ArticleContainer from '@/containers/Article';
 
-const Article = () => {
-  return <div>art</div>;
+const Article = ({
+    params,
+    searchParams,
+    ...props
+}: {
+    params: { id: string };
+    searchParams: any;
+}) => {
+    console.log(props);
+
+    return (
+        <ArticleContainer
+            match={{
+                params: {
+                    id: params.id,
+                },
+            }}
+        />
+    );
 };
 
 export default Article;
