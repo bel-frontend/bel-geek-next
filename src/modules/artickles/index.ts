@@ -1,4 +1,3 @@
-// import ApiRoutes from '@/modules/apiRoutes';
 import * as api_helpers from 'react_redux_api';
 import { createAction } from 'redux-actions';
 import {
@@ -19,13 +18,17 @@ const {
 const apiRoutes = new ApiRoutes();
 
 export const GET_ARTICKLES_REQUEST = `${modules}/GET_ARTICKLES_REQUEST`;
-export const GET_ARTICKLES_SUCCESS = `${modules}/GET_ARTICKLES_SUCCESS`;
 export const GET_ARTICKLE_BY_ID_REQUEST = `${modules}/GET_ARTICKLE_BY_ID_REQUEST`;
 export const UPDATE_ARTICLE_REQUEST = `${modules}/UPDATE_ARTICLE_REQUEST`;
 export const CREATE_ARTICLE_REQUEST = `${modules}/CREATE_ARTICLE_REQUEST`;
 export const SET_LIKE_REQUEST = `${modules}/SET_LIKE_REQUEST`;
 export const REMOVE_LIKE_REQUEST = `${modules}/REMOVE_LIKE_REQUEST`;
 export const SEND_ERRORR_REQUEST = `${modules}/SEND_ERRORR_REQUEST`;
+export const DELETE_ARTICLE_REQUEST = `${modules}/DELETE_ARTICLE_REQUEST`;
+
+export const AUTOSAVE_ARTICLE = `${modules}/AUTOSAVE_ARTICLE`;
+export const SAVE_ARTICLE_TO_STORE = `${modules}/SAVE_ARTICLE_TO_STORE`;
+export const CLEAR_AUTOSAVE_ARTICLE = `${modules}/CLEAR_AUTOSAVE_ARTICLE`;
 
 const SEARCH_ARTICLE = `${modules}/SEARCH_ARTICLE`;
 
@@ -37,8 +40,11 @@ export const setLikedRequest = actionCreator(SET_LIKE_REQUEST);
 export const removeLikeRequest = actionCreator(REMOVE_LIKE_REQUEST);
 
 export const sendErrorRequest = actionCreator(SEND_ERRORR_REQUEST);
+export const deleteArticleRequest = actionCreator(DELETE_ARTICLE_REQUEST);
 
 export const searchArticle = createAction(SEARCH_ARTICLE);
+export const autoSaveArticle = createAction(AUTOSAVE_ARTICLE);
+export const clearAutoSaveArticle = createAction(CLEAR_AUTOSAVE_ARTICLE);
 
 apiRoutes.add(GET_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
     url: `/artickles`,
@@ -79,22 +85,43 @@ apiRoutes.add(REMOVE_LIKE_REQUEST, ({ id }: { id: any }) => ({
     method: 'delete',
 }));
 
-export function* searchSaga(action: any): any {
-    yield put(
-        getArticklesRequest(action?.payload ? { search: action?.payload } : {}),
-    );
+apiRoutes.add(DELETE_ARTICLE_REQUEST, ({ id }: { id: any }) => ({
+    url: `/article/${id}`,
+    method: 'delete',
+}));
+
+const initialState = {};
+
+export const autoSaveArtickleReducer = (state = initialState, action: any) => {
+    switch (action.type) {
+        case SAVE_ARTICLE_TO_STORE: {
+            const {
+                payload: { ...data },
+            } = action;
+            return { ...state, ...data };
+        }
+        case CLEAR_AUTOSAVE_ARTICLE: {
+            return {};
+        }
+        default:
+            return state;
+    }
+};
+
+export function* autosaveSaga(action: any): any {
+    yield put({ type: SAVE_ARTICLE_TO_STORE, payload: action?.payload });
 }
 
-function* getArt(action: any) {
-    //@ts-ignore
-    const artickles = yield select(getArticklesSelector);
-    // console.log('getArt', artickles);
+export function* searchSaga(action: any): any {
+    yield put(getArticklesRequest(action?.payload));
 }
 
 export function* artickleModuleSaga(dispatch: any) {
     yield debounce(300, SEARCH_ARTICLE, searchSaga);
-    yield takeEvery([GET_ARTICKLES_SUCCESS], getArt);
+    yield debounce(1000, AUTOSAVE_ARTICLE, autosaveSaga);
 }
 
 export const getArticklesSelector = apiSelector(GET_ARTICKLES_REQUEST);
 export const getArtickleSelector = apiSelector(GET_ARTICKLE_BY_ID_REQUEST);
+export const getAutoSavedArtickleSelector = (state: any) =>
+    state.autoSaveArtickle;

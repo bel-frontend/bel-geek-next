@@ -3,6 +3,8 @@ import notificationsReducer from '@/modules/notification';
 import { authReducer } from '@/modules/auth';
 import { ViewPortReducer } from '@/modules/viewport';
 import { cookiesReducer } from '@/modules/cookies';
+import { popupsReducer } from '@/modules/popups';
+import { autoSaveArtickleReducer } from '../artickles';
 import { combineReducers } from 'redux';
 
 const {
@@ -19,4 +21,6 @@ export default combineReducers({
     notification: notificationsReducer,
     viewport: ViewPortReducer,
     cookies: cookiesReducer,
+    popups: popupsReducer,
+    autoSaveArtickle: autoSaveArtickleReducer,
 });

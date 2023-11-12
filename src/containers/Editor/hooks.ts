@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import moment from 'moment';
-import showNotification from '@/modules/notification';
 
 import {
     updateArtickleRequest,
     createArtickleRequest,
     getArtickleByIdRequest,
     getArtickleSelector,
+    autoSaveArticle,
+    clearAutoSaveArticle,
+    getAutoSavedArtickleSelector,
+    deleteArticleRequest,
 } from '@/modules/artickles';
+import { showPopupAction, hidePopupAction } from '@/modules/popups';
 
 import {
     uploadImageForArticleRequest,
@@ -44,15 +48,12 @@ const initialValues = {
     isPinned: false,
 };
 
-let interval: any;
-
 export const useHooks = ({ history, id }: { history: any; id: any }) => {
     const isAdd = id === 'add';
     const dispatch = useDispatch();
     const artickleData: any = useSelector(getArtickleSelector);
     const currentUser: any = useSelector(getCurrentUserSelector);
     const images: any = useSelector(getImagesSelector);
-    const [autoSave, enableAutoSave] = React.useState(true);
 
     const [urls, setUrls] = React.useState<any[]>([]);
 
@@ -80,6 +81,8 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
     } = useFormik({
         initialValues,
         onSubmit: (values) => {
+            console.log('values', values);
+
             const tags = values.tags.trim().split(' ').filter(Boolean);
 
             if (isAdd) {
@@ -105,40 +108,19 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                     ),
                 );
             }
+            dispatch(clearAutoSaveArticle());
         },
         validationSchema,
     });
 
-    // React.useEffect(() => {
-    //     if (autoSave) {
-    //         interval = setInterval(() => {
-    //             const tags = values.tags.trim().split(' ').filter(Boolean);
-    //             if (isAdd) {
-    //                 dispatch(
-    //                     createArtickleRequest(
-    //                         { ...values, tags, files: urls },
-    //                         {
-    //                             onSuccess: () => {},
-    //                         },
-    //                     ),
-    //                 );
-    //             } else {
-    //                 dispatch(
-    //                     updateArtickleRequest(
-    //                         { id, ...values, tags, files: urls },
-    //                         {
-    //                             onSuccess: () => {},
-    //                         },
-    //                     ),
-    //                 );
-    //             }
-    //         }, 5000);
-    //     } else {
-    //         clearInterval(interval);
-    //     }
-    // }, [autoSave]);
+    React.useEffect(() => {
+        if (isAdd || artickleData?.loaded) {
+            dispatch(autoSaveArticle({ ...values, isAdd, id }));
+        }
+    }, [values]);
 
     const { content = '', meta } = artickleData;
+    const autoSavedArticle = useSelector(getAutoSavedArtickleSelector);
 
     useEffect(() => {
         if (id && !isAdd) {
@@ -154,8 +136,13 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                     isActive: meta?.isActive || false,
                     isPinned: artickleData?.isPinned || false,
                     title: meta?.title || '',
+                    ...(autoSavedArticle?.id === id ? autoSavedArticle : {}),
                 });
             }
+        } else if (isAdd) {
+            setValues({
+                ...autoSavedArticle,
+            });
         }
     }, [id, setValues, isAdd, artickleData]);
 
@@ -188,6 +175,43 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
         );
     };
 
+    const onCancel = () => {
+        history.goBack();
+        dispatch(clearAutoSaveArticle());
+    };
+
+    const deleteArticle = () => {
+        dispatch(
+            showPopupAction({
+                title: '',
+                subtitle: 'Гэты артыкул будзе выдалены назаўседы. Працягнуць?',
+                type: 'confirm',
+                submitButtonText: 'Выдаліць',
+                cancelButtonText: 'Скасаваць',
+                onClick: () => {
+                    dispatch(
+                        deleteArticleRequest(
+                            { id },
+                            {
+                                onSuccess: () => {
+                                    history.push('/');
+                                },
+                            },
+                        ),
+                    );
+                    return true;
+                },
+                onCancel: () => {
+                    dispatch(hidePopupAction());
+                    return true;
+                },
+                confirmButtonProps: {
+                    color: 'error',
+                },
+            }),
+        );
+    };
+
     return {
         handleSubmit,
         values,
@@ -202,5 +226,7 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
         onImageUpload,
         urls,
         onDelete,
+        onCancel,
+        deleteArticle,
     };
 };

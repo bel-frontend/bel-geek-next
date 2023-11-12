@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect } from 'react';
 import classnames from 'classnames';
 
@@ -11,7 +12,6 @@ import Switch from '@mui/material/Switch';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/navigation';
 
 import { USER_ROLES } from '@/constants/users';
 
@@ -25,9 +25,14 @@ import style from './style.module.scss';
 
 const mdParser = new MarkdownIt({ typographer: true });
 
-const Editor = ({ id, ...props }: { id: string | number }) => {
-    const history = useRouter();
-
+const Editor = ({
+    history,
+    params: { id },
+    ...props
+}: {
+    history: any;
+    params: { id: number | string };
+}) => {
     const {
         handleSubmit,
         values,
@@ -42,6 +47,8 @@ const Editor = ({ id, ...props }: { id: string | number }) => {
         onImageUpload,
         urls,
         onDelete,
+        onCancel,
+        deleteArticle,
     } = useHooks({ history, id });
 
     return (
@@ -56,7 +63,7 @@ const Editor = ({ id, ...props }: { id: string | number }) => {
             </Box>
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={4}>
-                    <Grid item md={12}>
+                    <Grid item md={10}>
                         <TextField
                             fullWidth
                             id="title"
@@ -68,6 +75,16 @@ const Editor = ({ id, ...props }: { id: string | number }) => {
                             error={touched.title && Boolean(errors.title)}
                             helperText={touched.title && errors.title}
                         />
+                    </Grid>
+                    <Grid item md={2}>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={deleteArticle}
+                            disabled={isAdd}
+                        >
+                            Выдаліць артыкул
+                        </Button>
                     </Grid>
                     <Grid item md={6}>
                         <TextareaAutosize
@@ -183,10 +200,8 @@ const Editor = ({ id, ...props }: { id: string | number }) => {
                                 </label>
                             </Box>
                             <MdEditor
-                                renderHTML={(text: string) =>
-                                    mdParser.render(text)
-                                }
-                                onChange={({ text }: { text: string }) =>
+                                renderHTML={(text) => mdParser.render(text)}
+                                onChange={({ text }) =>
                                     setFieldValue('content', text)
                                 }
                                 value={values.content}
@@ -210,7 +225,7 @@ const Editor = ({ id, ...props }: { id: string | number }) => {
                                     variant="outlined"
                                     className="mt-5"
                                     color="primary"
-                                    onClick={() => history.back()}
+                                    onClick={onCancel}
                                 >
                                     Скасаваць
                                 </Button>
