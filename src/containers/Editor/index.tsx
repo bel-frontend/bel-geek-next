@@ -12,6 +12,7 @@ import Switch from '@mui/material/Switch';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/navigation';
 
 import { USER_ROLES } from '@/constants/users';
 
@@ -25,21 +26,14 @@ import style from './style.module.scss';
 
 const mdParser = new MarkdownIt({ typographer: true });
 
-const Editor = ({
-    history,
-    params: { id },
-    ...props
-}: {
-    history: any;
-    params: { id: number | string };
-}) => {
+const Editor = ({ params: { id } }: { params: { id: number | string } }) => {
+    const history = useRouter();
     const {
         handleSubmit,
         values,
         touched,
         handleChange,
         errors,
-        meta,
         currentUser,
         artickleData,
         setFieldValue,
@@ -50,6 +44,7 @@ const Editor = ({
         onCancel,
         deleteArticle,
     } = useHooks({ history, id });
+    console.log(artickleData, currentUser);
 
     return (
         <Box>
@@ -61,7 +56,13 @@ const Editor = ({
                     Meтаданыя
                 </label>
             </Box>
-            <form onSubmit={handleSubmit}>
+            <form
+                onSubmit={(ev) => {
+                    console.log('submit');
+
+                    handleSubmit(ev);
+                }}
+            >
                 <Grid container spacing={4}>
                     <Grid item md={10}>
                         <TextField

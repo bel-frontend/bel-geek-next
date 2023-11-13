@@ -176,7 +176,7 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
     };
 
     const onCancel = () => {
-        history.goBack();
+        history.back();
         dispatch(clearAutoSaveArticle());
     };
 
