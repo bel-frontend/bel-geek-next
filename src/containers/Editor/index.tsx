@@ -44,7 +44,7 @@ const Editor = ({ params: { id } }: { params: { id: number | string } }) => {
         onCancel,
         deleteArticle,
     } = useHooks({ history, id });
-    console.log(artickleData, currentUser);
+    // console.log(artickleData, currentUser);
 
     return (
         <Box>

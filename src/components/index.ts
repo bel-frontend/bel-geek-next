@@ -4,3 +4,4 @@ export * from './MD';
 export * from './MetaData';
 export * from './Footer';
 export * from './Snackbar';
+export * from './Popup';

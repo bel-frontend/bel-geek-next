@@ -70,6 +70,9 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
         }
     }, [id, isAdd]);
 
+    const autoSavedArticle = useSelector(getAutoSavedArtickleSelector);
+    const { content = '', meta } = artickleData;
+
     const {
         values,
         touched,
@@ -79,7 +82,26 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
         handleChange,
         handleSubmit,
     } = useFormik({
-        initialValues,
+        initialValues: {
+            ...initialValues,
+            ...(isAdd
+                ? {}
+                : {
+                      content: content,
+                      description: meta?.description || '',
+                      dateArticle: meta?.dateArticle || '',
+                      author: meta?.author || '',
+                      tags:
+                          (Array.isArray(meta?.tags) &&
+                              meta?.tags?.join(' ')) ||
+                          (meta?.tags ?? ''),
+                      isActive: meta?.isActive || false,
+                      isPinned: artickleData?.isPinned || false,
+                      title: meta?.title || '',
+                  }),
+            ...(autoSavedArticle?.id === id ? autoSavedArticle : {}),
+        },
+        enableReinitialize: true,
         onSubmit: (values) => {
             console.log('values', values);
 
@@ -96,6 +118,7 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                         },
                     ),
                 );
+                errors;
             } else {
                 dispatch(
                     updateArtickleRequest(
@@ -118,33 +141,6 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
             dispatch(autoSaveArticle({ ...values, isAdd, id }));
         }
     }, [values]);
-
-    const { content = '', meta } = artickleData;
-    const autoSavedArticle = useSelector(getAutoSavedArtickleSelector);
-
-    useEffect(() => {
-        if (id && !isAdd) {
-            if (artickleData?.loaded) {
-                setValues({
-                    content: content,
-                    description: meta?.description || '',
-                    dateArticle: meta?.dateArticle || '',
-                    author: meta?.author || '',
-                    tags:
-                        (Array.isArray(meta?.tags) && meta?.tags?.join(' ')) ||
-                        (meta?.tags ?? ''),
-                    isActive: meta?.isActive || false,
-                    isPinned: artickleData?.isPinned || false,
-                    title: meta?.title || '',
-                    ...(autoSavedArticle?.id === id ? autoSavedArticle : {}),
-                });
-            }
-        } else if (isAdd) {
-            setValues({
-                ...autoSavedArticle,
-            });
-        }
-    }, [id, setValues, isAdd, artickleData]);
 
     const onImageUpload = (data: any) => {
         const formData = new FormData();

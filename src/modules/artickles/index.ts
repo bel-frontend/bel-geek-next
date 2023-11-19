@@ -18,6 +18,7 @@ const {
 const apiRoutes = new ApiRoutes();
 
 export const GET_ARTICKLES_REQUEST = `${modules}/GET_ARTICKLES_REQUEST`;
+export const GET_ARTICKLES_PINNED_REQUEST = `${modules}/GET_ARTICKLES_PINNED_REQUEST`;
 export const GET_ARTICKLE_BY_ID_REQUEST = `${modules}/GET_ARTICKLE_BY_ID_REQUEST`;
 export const UPDATE_ARTICLE_REQUEST = `${modules}/UPDATE_ARTICLE_REQUEST`;
 export const CREATE_ARTICLE_REQUEST = `${modules}/CREATE_ARTICLE_REQUEST`;
@@ -33,6 +34,10 @@ export const CLEAR_AUTOSAVE_ARTICLE = `${modules}/CLEAR_AUTOSAVE_ARTICLE`;
 const SEARCH_ARTICLE = `${modules}/SEARCH_ARTICLE`;
 
 export const getArticklesRequest = actionCreator(GET_ARTICKLES_REQUEST);
+
+export const getPinnedArticlesRequest = actionCreator(
+    GET_ARTICKLES_PINNED_REQUEST,
+);
 export const updateArtickleRequest = actionCreator(UPDATE_ARTICLE_REQUEST);
 export const createArtickleRequest = actionCreator(CREATE_ARTICLE_REQUEST);
 export const getArtickleByIdRequest = actionCreator(GET_ARTICKLE_BY_ID_REQUEST);
@@ -48,6 +53,12 @@ export const clearAutoSaveArticle = createAction(CLEAR_AUTOSAVE_ARTICLE);
 
 apiRoutes.add(GET_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
     url: `/artickles`,
+    method: 'get',
+    params: params,
+}));
+
+apiRoutes.add(GET_ARTICKLES_PINNED_REQUEST, ({ ...params } = {}) => ({
+    url: `/pinned-articles`,
     method: 'get',
     params: params,
 }));
@@ -123,5 +134,8 @@ export function* artickleModuleSaga(dispatch: any) {
 
 export const getArticklesSelector = apiSelector(GET_ARTICKLES_REQUEST);
 export const getArtickleSelector = apiSelector(GET_ARTICKLE_BY_ID_REQUEST);
+export const getPinndedArticklesSelector = apiSelector(
+    GET_ARTICKLES_PINNED_REQUEST,
+);
 export const getAutoSavedArtickleSelector = (state: any) =>
     state.autoSaveArtickle;

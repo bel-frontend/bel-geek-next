@@ -22,7 +22,7 @@ const initDataSaga = function* (action: any, dipatch: any) {
 
 export const isRehydrated = (state: any) => state._persist.rehydrated;
 
-export const initModuleSaga = function* (dispatch: any, action: any) {
+export const initModuleSaga = function* (dispatch: any, action?: any) {
     // console.log('initModuleSaga', action, dispatch);
 
     yield all([

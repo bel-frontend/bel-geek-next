@@ -5,7 +5,12 @@ import { EpisodePreview } from './components/EpisodePreview/';
 import style from './style.module.scss';
 import { USER_ROLES } from '@/constants/users';
 
-import { getArticklesRequest, getArticklesSelector } from '@/modules/artickles';
+import {
+    getArticklesRequest,
+    getArticklesSelector,
+    getPinndedArticklesSelector,
+    getPinnedArticlesRequest,
+} from '@/modules/artickles';
 
 import { getDataWrapper } from '@/modules/apiRoutes';
 
@@ -23,7 +28,6 @@ const Home = async ({
         user_email: 'test',
         user_avatar: {},
     };
-
     const { articles } = await getDataWrapper(
         {
             requestAction: getArticklesRequest,
@@ -32,13 +36,17 @@ const Home = async ({
         { search: searchText },
     );
 
+    const { articles: pinnedArticles } = await getDataWrapper(
+        {
+            requestAction: getPinnedArticlesRequest,
+            resultSelector: getPinndedArticklesSelector,
+        },
+        { search: searchText },
+    );
+
     const preparedArticles = (() => {
-        const pinned = (articles || []).filter((i: any) => i?.meta?.isPinned); //TODO need move that to BE(sort by pinned)
-        const non_pinned = (articles || []).filter(
-            (i: any) => !i?.meta?.isPinned,
-        );
-        return [...pinned, ...non_pinned].filter(
-            (i) =>
+        return ([...pinnedArticles, ...articles] || []).filter(
+            (i: any) =>
                 i.isActive ||
                 (!i.isActive && currentUser?.user_id === i?.meta?.user_id) ||
                 currentUser.role === USER_ROLES.SUPERADMIN,

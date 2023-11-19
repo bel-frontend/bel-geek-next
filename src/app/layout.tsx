@@ -5,6 +5,8 @@ import { Inter } from 'next/font/google';
 import { Layout } from '@/containers/layouts/Layout';
 import mainRoutes from '@/routes';
 import { ReduxProvider, ThemeRegistry } from '@/providers';
+import Popups from '@/containers/Popups';
+import '@/modules/translations';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +32,7 @@ function RootLayout({
                         <Layout params={{ ...props?.params }}>
                             {children}
                         </Layout>
+                        <Popups />
                     </ThemeRegistry>
                 </ReduxProvider>
             </body>
