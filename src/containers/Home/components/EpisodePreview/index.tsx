@@ -1,15 +1,12 @@
 import React from 'react';
 import { MetaData } from '@/components/MetaData';
+import { Box } from '@mui/material';
 import { MD } from '@/components';
-import { useInView } from 'react-intersection-observer';
-
+import EditLink from '../EditLink';
 import Link from 'next/link';
 
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import Chip from '@mui/material/Chip';
 
-import { USER_ROLES } from '@/constants/users';
 import style from './style.module.scss';
 
 export const EpisodePreview = ({
@@ -21,6 +18,8 @@ export const EpisodePreview = ({
     likes = 0,
     currentUser,
 }: any) => {
+    console.log('currentUser', currentUser);
+
     // const { ref, entry } = useInView({ threshold: 0 });
     const url = id ? `/article/${id}` : '/';
     const { user_id } = meta;
@@ -30,21 +29,33 @@ export const EpisodePreview = ({
         <article className="episode box">
             <>
                 <div className="article">
-                    <h2 className="episode__title">
-                        <Link
-                            className={
-                                userIsAuth && !isActive
-                                    ? style.deactivatedLink
-                                    : style.link
-                            }
-                            href={meta ? url : '/'}
-                        >
-                            {meta.title}
-                        </Link>
-                        {meta?.isPinned ? (
-                            <Chip sx={{ ml: 2, mr: 2 }} label="Замацаванае" />
-                        ) : null}
-                    </h2>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h2 className="episode__title">
+                            <Link
+                                className={
+                                    userIsAuth && !isActive
+                                        ? style.deactivatedLink
+                                        : style.link
+                                }
+                                href={meta ? url : '/'}
+                            >
+                                {meta.title}
+                            </Link>
+                            {meta?.isPinned ? (
+                                <Chip
+                                    sx={{ ml: 2, mr: 2 }}
+                                    label="Замацаванае"
+                                />
+                            ) : null}
+                        </h2>
+                        <EditLink meta={meta} id={id} />
+                    </Box>
                     <div className="content">
                         <MD>{content}</MD>
                     </div>
