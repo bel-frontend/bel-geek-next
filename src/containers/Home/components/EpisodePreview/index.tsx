@@ -18,8 +18,6 @@ export const EpisodePreview = ({
     likes = 0,
     currentUser,
 }: any) => {
-    console.log('currentUser', currentUser);
-
     // const { ref, entry } = useInView({ threshold: 0 });
     const url = id ? `/article/${id}` : '/';
     const { user_id } = meta;

@@ -190,7 +190,7 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                             { id },
                             {
                                 onSuccess: () => {
-                                    history.push('/');
+                                    history.back();
                                 },
                             },
                         ),

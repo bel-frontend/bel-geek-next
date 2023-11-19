@@ -12,9 +12,11 @@ import { Box } from '@mui/material';
 const EditLink = ({ meta, id }: any) => {
     const currentUser: any = useSelector(getCurrentUserSelector);
     const { role } = currentUser;
-    console.log('currentUser', currentUser, meta, role);
     const router = useRouter();
-    return (
+    console.log(meta, currentUser);
+
+    return role === USER_ROLES.ADMIN ||
+        currentUser?.user_id === meta?.user_id ? (
         <Box>
             <IconButton
                 onClick={() => {
@@ -24,7 +26,7 @@ const EditLink = ({ meta, id }: any) => {
                 <EditIcon />
             </IconButton>
         </Box>
-    );
+    ) : null;
 };
 
 export default EditLink;
