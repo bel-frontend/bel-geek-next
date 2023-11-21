@@ -13,7 +13,6 @@ const EditLink = ({ meta, id }: any) => {
     const currentUser: any = useSelector(getCurrentUserSelector);
     const { role } = currentUser;
     const router = useRouter();
-    console.log(meta, currentUser);
 
     return role === USER_ROLES.ADMIN ||
         currentUser?.user_id === meta?.user_id ? (
