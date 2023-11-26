@@ -3,7 +3,6 @@ import '@/styles/index.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import EmptyLayout from '@/containers/layouts/EmptyLayout';
-import mainRoutes from '@/routes';
 import { ReduxProvider, ThemeRegistry } from '@/providers';
 import Popups from '@/containers/Popups';
 import '@/modules/translations';

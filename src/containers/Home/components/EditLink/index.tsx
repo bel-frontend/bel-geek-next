@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { USER_ROLES } from '@/constants/users';
-import { useInView } from 'react-intersection-observer';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import { getCurrentUserSelector, currentUserIsAuth } from '@/modules/auth';

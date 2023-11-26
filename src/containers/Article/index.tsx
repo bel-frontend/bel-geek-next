@@ -39,16 +39,11 @@ export async function generateMetadata(
         { id },
     );
 
-    // optionally access and extend (rather than replace) parent metadata
-    const previousImages = (await parent).openGraph?.images || [];
-
     return {
         title: product.title,
-        openGraph: {
-            images: ['/some-specific-page-image.jpg', ...previousImages],
-        },
     };
 }
+
 const Article = async ({
     match: {
         params: { id },
