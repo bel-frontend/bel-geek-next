@@ -2,7 +2,7 @@
 import '@/styles/index.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Layout } from '@/containers/layouts/Layout';
+import EmptyLayout from '@/containers/layouts/EmptyLayout';
 import mainRoutes from '@/routes';
 import { ReduxProvider, ThemeRegistry } from '@/providers';
 import Popups from '@/containers/Popups';
@@ -25,20 +25,7 @@ function RootLayout({
         [key: string]: string | string[] | undefined;
     };
 }) {
-    const router = useRouter();
-    console.log('RootLayout', props, mainRoutes, router);
-    return (
-        <html lang="en">
-            <body className={inter.className}>
-                <ReduxProvider>
-                    <ThemeRegistry options={{ key: 'mui' }}>
-                        {children}
-                        <Popups />
-                    </ThemeRegistry>
-                </ReduxProvider>
-            </body>
-        </html>
-    );
+    return <EmptyLayout params={{ ...props?.params }}>{children}</EmptyLayout>;
 }
 
 export default RootLayout;

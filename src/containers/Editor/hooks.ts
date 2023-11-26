@@ -118,7 +118,6 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                         },
                     ),
                 );
-                errors;
             } else {
                 dispatch(
                     updateArtickleRequest(
