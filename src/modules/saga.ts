@@ -34,8 +34,8 @@ if (process.env.NODE_ENV == 'development') {
     init('http://localhost:3001');
     // init('https://api.bel-frontend.online');
 } else if (process.env.NODE_ENV == 'production') {
-    init('http://localhost:3001');
-    // init('https://api.bel-frontend.online');
+    // init('http://localhost:3001');
+    init('https://api.bel-frontend.online');
 }
 
 // TODO:  need refactoring
