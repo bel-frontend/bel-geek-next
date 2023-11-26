@@ -1,12 +1,9 @@
 'use client';
 import '@/styles/index.scss';
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Layout } from '@/containers/layouts/Layout';
-import { useSelector } from 'react-redux';
 import '@/modules/translations';
 import { useRouter } from 'next/navigation';
-import { currentUserIsAuth } from '@/modules/auth';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,9 +17,6 @@ function LayoutAuth({
     };
 }) {
     const router = useRouter();
-    const userIsAuth = useSelector(currentUserIsAuth);
-    if (!userIsAuth) router.push('/login');
-
     return <Layout params={{ ...props?.params }}>{children}</Layout>;
 }
 
