@@ -14,7 +14,6 @@ const Popups = () => {
     const confirms = useSelector(popupSelector);
     const dispatch = useDispatch();
     const onHidePopup = (id: any) => dispatch(hidePopupAction(id));
-    console.log('confirms', confirms);
 
     return (
         <>

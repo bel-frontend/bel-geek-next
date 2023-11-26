@@ -2,21 +2,27 @@ import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 
 import { EpisodePreview } from './components/EpisodePreview/';
-import style from './style.module.scss';
 import { USER_ROLES } from '@/constants/users';
-
 import {
     getArticklesRequest,
     getArticklesSelector,
     getPinndedArticklesSelector,
     getPinnedArticlesRequest,
 } from '@/modules/artickles';
-
 import { getDataWrapper } from '@/modules/apiRoutes';
+import Pagination from './components/Pagination';
+import style from './style.module.scss';
+
+const ARTICLES_PER_PAGE = 10;
+const DEFAULT_PAGE_NUM = 1;
 
 const Home = async ({
     route: { userIsAuth },
-    searchParams: { searchText },
+    searchParams: {
+        searchText,
+        page = DEFAULT_PAGE_NUM,
+        size = ARTICLES_PER_PAGE,
+    },
 }: {
     route: { userIsAuth?: boolean };
     [key: string]: any;
@@ -28,12 +34,12 @@ const Home = async ({
         user_email: 'test',
         user_avatar: {},
     };
-    const { articles } = await getDataWrapper(
+    const { articles, total } = await getDataWrapper(
         {
             requestAction: getArticklesRequest,
             resultSelector: getArticklesSelector,
         },
-        { search: searchText },
+        { search: searchText, pageNum: page, pageSize: size },
     );
 
     const { articles: pinnedArticles } = await getDataWrapper(
@@ -96,6 +102,7 @@ const Home = async ({
                                 />
                             ) : null,
                     )}
+                <Pagination total={total} size={size} />
             </Box>
         </>
     );

@@ -2,12 +2,9 @@
 import '@/styles/index.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Layout } from '@/containers/layouts/Layout';
-import mainRoutes from '@/routes';
 import { ReduxProvider, ThemeRegistry } from '@/providers';
 import Popups from '@/containers/Popups';
 import '@/modules/translations';
-import { useRouter } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,8 +22,6 @@ function RootLayout({
         [key: string]: string | string[] | undefined;
     };
 }) {
-    const router = useRouter();
-    console.log('RootLayout', props, mainRoutes, router);
     return (
         <html lang="en">
             <body className={inter.className}>

@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import '@/styles/index.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -21,9 +22,16 @@ function LayoutAuth({
 }) {
     const router = useRouter();
     const userIsAuth = useSelector(currentUserIsAuth);
-    if (!userIsAuth) router.push('/login');
 
-    return <Layout params={{ ...props?.params }}>{children}</Layout>;
+    React.useEffect(() => {
+        if (!userIsAuth) router.push('/login');
+    }, [userIsAuth]);
+
+    return (
+        <Layout params={{ ...props?.params }} maxWidth="xl">
+            {children}
+        </Layout>
+    );
 }
 
 export default LayoutAuth;

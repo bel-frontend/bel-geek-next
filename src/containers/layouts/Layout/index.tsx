@@ -13,7 +13,7 @@ export const Layout = ({ children, ...props }: any) => {
         showHeader = true,
         isMobile = false,
         showFooter = true,
-        maxWidth = 'lg',
+        maxWidth = 'md',
     } = props;
     const userIsAuth = useSelector(currentUserIsAuth);
     const viewPort = useSelector(getViewport);
