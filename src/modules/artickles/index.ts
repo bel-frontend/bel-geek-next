@@ -18,6 +18,8 @@ const {
 const apiRoutes = new ApiRoutes();
 
 export const GET_ARTICKLES_REQUEST = `${modules}/GET_ARTICKLES_REQUEST`;
+export const GET_ARTICLES_IDS_REQUEST = `${modules}/GET_ARTICLES_IDS_REQUEST`;
+
 export const GET_ARTICKLES_PINNED_REQUEST = `${modules}/GET_ARTICKLES_PINNED_REQUEST`;
 export const GET_MY_ARTICKLES_REQUEST = `${modules}/GET_MY_ARTICKLES_REQUEST`;
 
@@ -36,6 +38,7 @@ export const CLEAR_AUTOSAVE_ARTICLE = `${modules}/CLEAR_AUTOSAVE_ARTICLE`;
 const SEARCH_ARTICLE = `${modules}/SEARCH_ARTICLE`;
 
 export const getArticklesRequest = actionCreator(GET_ARTICKLES_REQUEST);
+export const getArticlesIdsRequest = actionCreator(GET_ARTICLES_IDS_REQUEST);
 
 export const getPinnedArticlesRequest = actionCreator(
     GET_ARTICKLES_PINNED_REQUEST,
@@ -57,6 +60,12 @@ export const clearAutoSaveArticle = createAction(CLEAR_AUTOSAVE_ARTICLE);
 
 apiRoutes.add(GET_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
     url: `/artickles`,
+    method: 'get',
+    params: params,
+}));
+
+apiRoutes.add(GET_ARTICLES_IDS_REQUEST, ({ ...params } = {}) => ({
+    url: `/articles-ids`,
     method: 'get',
     params: params,
 }));
@@ -150,3 +159,5 @@ export const getPinndedArticklesSelector = apiSelector(
 export const getMyArticklesSelector = apiSelector(GET_MY_ARTICKLES_REQUEST);
 export const getAutoSavedArtickleSelector = (state: any) =>
     state.autoSaveArtickle;
+
+export const getArticlesIdsSelector = apiSelector(GET_ARTICLES_IDS_REQUEST);
