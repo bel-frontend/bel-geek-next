@@ -30,11 +30,11 @@ const {
 } = apiHelpers;
 
 if (process.env.NODE_ENV == 'development') {
-    init(process.env.TEST_URL);
-    // init('https://api.bel-frontend.online');
+    // init(process.env.TEST_URL);
+    init('https://api.bel-frontend.online');
 } else if (process.env.NODE_ENV == 'production') {
-    // init('http://localhost:3001');
-    init(process.env.PROD_URL);
+    init('http://localhost:3001');
+    // init(process.env.PROD_URL);
 }
 
 // TODO:  need refactoring
