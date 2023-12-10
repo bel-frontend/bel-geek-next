@@ -11,8 +11,6 @@ const Article = ({
     params: { id: string };
     searchParams: any;
 }) => {
-    console.log(props);
-
     return (
         <ArticleContainer
             match={{

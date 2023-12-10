@@ -4,7 +4,7 @@ import React from 'react';
 import HomePage from '@/containers/Home';
 
 export const metadata: Metadata = {
-    // metadataBase: new URL('https://bel-geek.com'),
+    metadataBase: new URL('https://bel-geek.com'),
     title: 'Bel-Geek.com - Тэхналогіі і Навука На Беларускай Мове',
     description: 'Bel-Geek.com - Тэхналогіі і Навука На Беларускай Мове',
     icons: {
