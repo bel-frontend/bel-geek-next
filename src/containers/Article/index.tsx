@@ -42,7 +42,7 @@ export async function generateMetadata(
     return {
         title: product.title,
         description: product.description,
-        // metadataBase: new URL('https://bel-geek.com'),
+        metadataBase: new URL('https://bel-geek.com'),
         alternates: {
             canonical: '/',
             languages: {

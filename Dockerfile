@@ -1,6 +1,8 @@
 FROM node:20
 
 WORKDIR /app
+# Custom cache invalidation
+ARG CACHEBUST=$(date +%s)
 
 COPY  .  .
 
