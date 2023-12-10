@@ -1,6 +1,5 @@
 'use client';
 import '@/styles/index.scss';
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReduxProvider, ThemeRegistry } from '@/providers';
 import Popups from '@/containers/Popups';
