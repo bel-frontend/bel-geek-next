@@ -40,6 +40,7 @@ export async function generateMetadata(
     );
 
     return {
+        metadataBase: new URL('https://bel-geek.com'),
         title: product.title,
         description: product.description,
         openGraph: {
