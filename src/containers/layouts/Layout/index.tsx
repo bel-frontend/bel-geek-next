@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { createElement } from 'react';
 import { Container, Box } from '@mui/material';
 
 import { Header, Footer } from '@/components';
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { currentUserIsAuth } from '@/modules/auth';
 import { getViewport } from '@/modules/viewport';
 import { useRouter } from 'next/navigation';
+import BuyMeACofee from './components/BuyMeACoffe';
 
 export const Layout = ({ children, ...props }: any) => {
     const { showHeader = true, showFooter = true, maxWidth = 'md' } = props;
@@ -26,7 +27,17 @@ export const Layout = ({ children, ...props }: any) => {
                 />
             ) : null}
             <ScrollToTop viewPort={viewPort} />
-
+            <Container
+                maxWidth={maxWidth}
+                sx={{
+                    mt: -6,
+                    mb: 2,
+                }}
+            >
+                <Box display={'flex'} justifyContent={'center'}>
+                    <BuyMeACofee isMobile={isMobile} />
+                </Box>
+            </Container>
             <Container maxWidth={maxWidth} sx={{ minHeight: '80vh' }}>
                 {children}
             </Container>
