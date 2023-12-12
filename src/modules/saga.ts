@@ -22,6 +22,8 @@ import {
     logoutAction,
     checkUserAccess,
 } from '@/modules/auth';
+import { i18nextModuleSaga } from './i18next';
+
 import { artickleModuleSaga } from '@/modules/artickles';
 
 const {
@@ -151,6 +153,7 @@ function* rootSaga(dispatch: any) {
         notificationSaga(dispatch),
         authModuleSaga(dispatch),
         artickleModuleSaga(dispatch),
+        i18nextModuleSaga(dispatch),
     ]);
 }
 

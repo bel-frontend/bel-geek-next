@@ -11,6 +11,7 @@ import {
 } from '@/modules/artickles';
 import { getDataWrapper } from '@/modules/apiRoutes';
 import Pagination from './components/Pagination';
+
 import style from './style.module.scss';
 
 const ARTICLES_PER_PAGE = 10;

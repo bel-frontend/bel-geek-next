@@ -19,7 +19,7 @@ const BuyMeACofee = ({ isMobile }: { isMobile: boolean }) => {
                     }
                 >
                     <Typography variant="body2" color="primary">
-                        пакінуць на каву {isMobile ? '(Серверы)' : ''}
+                        на падтрымку праекта
                     </Typography>
                 </Button>
             </Tooltip>

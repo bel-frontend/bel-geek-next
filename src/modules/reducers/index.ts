@@ -6,6 +6,7 @@ import { cookiesReducer } from '@/modules/cookies';
 import { popupsReducer } from '@/modules/popups';
 import { autoSaveArtickleReducer } from '../artickles';
 import { combineReducers } from 'redux';
+import { i18nextReducer } from '../i18next';
 
 const {
     modules: { apiDefaultReducer },
@@ -23,4 +24,5 @@ export default combineReducers({
     cookies: cookiesReducer,
     popups: popupsReducer,
     autoSaveArtickle: autoSaveArtickleReducer,
+    locale: i18nextReducer,
 });

@@ -1,9 +1,12 @@
 'use client';
 import '@/styles/index.scss';
+import React from 'react';
 import { Inter } from 'next/font/google';
-import { ReduxProvider, ThemeRegistry } from '@/providers';
+import { ReduxProvider, ThemeRegistry, InitProvider } from '@/providers';
 import Popups from '@/containers/Popups';
 import '@/modules/translations';
+import { useDispatch } from 'react-redux';
+import { initDataAction } from '@/modules/init';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,10 +23,12 @@ function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <ReduxProvider>
-                    <ThemeRegistry options={{ key: 'mui' }}>
-                        {children}
-                        <Popups />
-                    </ThemeRegistry>
+                    <InitProvider>
+                        <ThemeRegistry options={{ key: 'mui' }}>
+                            {children}
+                            <Popups />
+                        </ThemeRegistry>
+                    </InitProvider>
                 </ReduxProvider>
             </body>
         </html>
