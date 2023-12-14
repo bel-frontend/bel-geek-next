@@ -103,8 +103,6 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
         },
         enableReinitialize: true,
         onSubmit: (values) => {
-            console.log('values', values);
-
             const tags = values.tags.trim().split(' ').filter(Boolean);
 
             if (isAdd) {
@@ -114,6 +112,7 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                         {
                             onSuccess: () => {
                                 history.push('/');
+                                history.refresh();
                             },
                         },
                     ),
@@ -125,6 +124,7 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                         {
                             onSuccess: () => {
                                 history.push('/');
+                                history.refresh();
                             },
                         },
                     ),
@@ -189,7 +189,9 @@ export const useHooks = ({ history, id }: { history: any; id: any }) => {
                             { id },
                             {
                                 onSuccess: () => {
+                                    dispatch(clearAutoSaveArticle());
                                     history.back();
+                                    history.refresh();
                                 },
                             },
                         ),
