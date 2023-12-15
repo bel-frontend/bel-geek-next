@@ -14,6 +14,7 @@ import {
     getMyArticlesRequest,
 } from '@/modules/artickles';
 import { getCurrentUserSelector } from '@/modules/auth';
+import Link from 'next/link';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,15 +52,35 @@ function a11yProps(index: number) {
 export default function Profile({ history }: any) {
     const [value, setValue] = React.useState(0);
     const { articles, total }: any = useSelector(getMyArticklesSelector);
+    const currentUser: any = useSelector(getCurrentUserSelector);
+
     const dispatch = useDispatch();
     React.useEffect(() => {
         dispatch(getMyArticlesRequest());
     }, []);
-    console.log('articles', articles);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
+    const { preparedArticles, likes, articleWithMostLikes } =
+        React.useMemo(() => {
+            const articleWithMostLikes = articles?.reduce(
+                (max: any, article: any) => {
+                    return (max?.likes || 0) > (article?.likes || 0)
+                        ? max
+                        : article;
+                },
+                null,
+            );
+            console.log(articleWithMostLikes);
+
+            return {
+                preparedArticles: articles || [],
+                likes: articles?.reduce((acc: any, article: any) => {
+                    return acc + article?.likes;
+                }, 0),
+                articleWithMostLikes,
+            };
+        }, [articles]);
+
+    console.log(likes, preparedArticles);
 
     return (
         <Box
@@ -71,68 +92,37 @@ export default function Profile({ history }: any) {
                 // height: 224,
             }}
         >
-            {/*             
-            <Tabs
-            orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs example"
-                sx={{
-                    borderRight: 1,
-                    borderColor: 'divider',
-                    minWidth: '150px',
-                }}
-            >
-                <Tab label=" Мае артыкулы" {...a11yProps(0)} />
-                <Tab label="Налады" {...a11yProps(1)} />
-            </Tabs>
-            <TabPanel value={value} index={0}>
-                <MyArtickles history={history} />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                Тут будуць мае налады
-            </TabPanel> */}
             <GridGenerator
                 style={{
                     minHeight: '100%',
                     maxHeight: '100%',
                 }}
-                cols={5}
-                rows={6}
+                cols={3}
+                rows={7}
                 gap={[30, 30]}
             >
                 <Cell col={0} row={0} colSpan={1} rowSpan={1}>
                     <Card>
-                        <Typography>Мае артыкулы</Typography>
+                        <Typography variant="subtitle1">
+                            Усяго падабаек:
+                        </Typography>
+                        <Typography>{likes}</Typography>
                     </Card>
                 </Cell>
-                <Cell col={1} row={0} colSpan={1} rowSpan={1}>
+                <Cell col={1} row={0} colSpan={2} rowSpan={1}>
                     <Card>
-                        <Typography>Мае артыкулы</Typography>
+                        <Typography variant="subtitle1">
+                            Самы папулярны артыкул:
+                        </Typography>
+                        <Typography>
+                            <Link href={`/article/${articleWithMostLikes?.id}`}>
+                                {articleWithMostLikes?.meta?.title || 'Няма'}
+                            </Link>
+                        </Typography>
                     </Card>
                 </Cell>
-                <Cell col={2} row={0} colSpan={1} rowSpan={1}>
-                    <Card
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        <Typography>Мае артыкулы</Typography>
-                    </Card>
-                </Cell>
-                <Cell col={3} row={0} colSpan={2} rowSpan={1}>
-                    <Card
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        <Typography>Мае артыкулы</Typography>
-                    </Card>
-                </Cell>
-                <Cell col={0} row={1} colSpan={5} rowSpan={5}>
+
+                <Cell col={0} row={1} colSpan={3} rowSpan={6}>
                     <Card
                         sx={{
                             width: '100%',
@@ -151,7 +141,10 @@ export default function Profile({ history }: any) {
                         >
                             Мае артыкулы
                         </Typography>
-                        <MyArtickles history={history} />
+                        <MyArtickles
+                            history={history}
+                            articles={preparedArticles}
+                        />
                     </Card>
                 </Cell>
             </GridGenerator>

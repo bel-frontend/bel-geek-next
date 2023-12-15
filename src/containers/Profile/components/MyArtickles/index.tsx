@@ -1,43 +1,21 @@
 import React from 'react';
-import { EpisodePreview } from '@/containers/Home/components/EpisodePreview';
 import { Box } from '@mui/system';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import { useRouter } from 'next/navigation';
 
-import {
-    getMyArticklesSelector,
-    getMyArticlesRequest,
-} from '@/modules/artickles';
-import { getCurrentUserSelector } from '@/modules/auth';
-import { Typography } from '@mui/material';
-
-export const MyArtickles = ({ history }: any) => {
-    const dispatch = useDispatch();
-    const currentUser: any = useSelector(getCurrentUserSelector);
-    const { articles, total }: any = useSelector(getMyArticklesSelector);
+export const MyArtickles = ({ articles = [] }: any) => {
     const router = useRouter();
-    const preparedArticles = React.useMemo(() => {
-        return articles || [];
-    }, [articles]);
-
-    React.useEffect(() => {
-        dispatch(getMyArticlesRequest());
-    }, []);
-    console.log('articles', preparedArticles);
 
     return (
         <Box sx={{ maxWidth: '100%', maxHeight: '100%', overflowY: 'auto' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableBody>
-                    {preparedArticles.map(
+                    {articles.map(
                         (
                             {
                                 content,
@@ -72,7 +50,7 @@ export const MyArtickles = ({ history }: any) => {
                                     <TableCell align="right">
                                         {meta?.isActive ? null : (
                                             <Chip
-                                                label="Неактыўна"
+                                                label="Чарнавік"
                                                 color="warning"
                                             />
                                         )}
