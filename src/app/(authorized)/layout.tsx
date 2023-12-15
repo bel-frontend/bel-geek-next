@@ -28,9 +28,21 @@ function LayoutAuth({
     }, [userIsAuth]);
 
     return (
-        <Layout params={{ ...props?.params }} maxWidth="xl">
-            {children}
-        </Layout>
+        <div
+            style={{
+                backgroundColor: 'rgb(245, 245, 245)',
+            }}
+        >
+            <Layout
+                params={{ ...props?.params }}
+                styles={{
+                    bgColour: 'transparent',
+                }}
+                maxWidth="xl"
+            >
+                {children}
+            </Layout>
+        </div>
     );
 }
 

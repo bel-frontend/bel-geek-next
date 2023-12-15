@@ -4,7 +4,17 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+
+import { Cell, GridGenerator, Card } from '@/components';
 import { MyArtickles } from './components/MyArtickles';
+import { Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    getMyArticklesSelector,
+    getMyArticlesRequest,
+} from '@/modules/artickles';
+import { getCurrentUserSelector } from '@/modules/auth';
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -40,6 +50,12 @@ function a11yProps(index: number) {
 
 export default function Profile({ history }: any) {
     const [value, setValue] = React.useState(0);
+    const { articles, total }: any = useSelector(getMyArticklesSelector);
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        dispatch(getMyArticlesRequest());
+    }, []);
+    console.log('articles', articles);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -48,14 +64,16 @@ export default function Profile({ history }: any) {
     return (
         <Box
             sx={{
-                flexGrow: 1,
-                bgcolor: 'background.paper',
-                display: 'flex',
+                // flexGrow: 1,
+                // display: 'flex',
+                height: '80vh',
+                width: '100%',
                 // height: 224,
             }}
         >
+            {/*             
             <Tabs
-                orientation="vertical"
+            orientation="vertical"
                 variant="scrollable"
                 value={value}
                 onChange={handleChange}
@@ -74,7 +92,69 @@ export default function Profile({ history }: any) {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 Тут будуць мае налады
-            </TabPanel>
+            </TabPanel> */}
+            <GridGenerator
+                style={{
+                    minHeight: '100%',
+                    maxHeight: '100%',
+                }}
+                cols={5}
+                rows={6}
+                gap={[30, 30]}
+            >
+                <Cell col={0} row={0} colSpan={1} rowSpan={1}>
+                    <Card>
+                        <Typography>Мае артыкулы</Typography>
+                    </Card>
+                </Cell>
+                <Cell col={1} row={0} colSpan={1} rowSpan={1}>
+                    <Card>
+                        <Typography>Мае артыкулы</Typography>
+                    </Card>
+                </Cell>
+                <Cell col={2} row={0} colSpan={1} rowSpan={1}>
+                    <Card
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <Typography>Мае артыкулы</Typography>
+                    </Card>
+                </Cell>
+                <Cell col={3} row={0} colSpan={2} rowSpan={1}>
+                    <Card
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <Typography>Мае артыкулы</Typography>
+                    </Card>
+                </Cell>
+                <Cell col={0} row={1} colSpan={5} rowSpan={5}>
+                    <Card
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            overflowY: 'auto',
+                            maxHeight: '100%',
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            // sx={{
+                            //     position: 'sticky',
+                            //     top: 0,
+                            //     backgroundColor: 'white',
+                            // }}
+                        >
+                            Мае артыкулы
+                        </Typography>
+                        <MyArtickles history={history} />
+                    </Card>
+                </Cell>
+            </GridGenerator>
         </Box>
     );
 }

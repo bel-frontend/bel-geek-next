@@ -5,3 +5,5 @@ export * from './MetaData';
 export * from './Footer';
 export * from './Snackbar';
 export * from './Popup';
+export * from './GridGenerator';
+export * from './Card';

@@ -10,7 +10,7 @@ import { getViewport } from '@/modules/viewport';
 import { useRouter } from 'next/navigation';
 import BuyMeACofee from './components/BuyMeACoffe';
 
-export const Layout = ({ children, ...props }: any) => {
+export const Layout = ({ children, style = {}, ...props }: any) => {
     const { showHeader = true, showFooter = true, maxWidth = 'md' } = props;
 
     const userIsAuth = useSelector(currentUserIsAuth);
@@ -32,13 +32,14 @@ export const Layout = ({ children, ...props }: any) => {
                 sx={{
                     mt: -6,
                     mb: 2,
+                    ...style,
                 }}
             >
                 <Box display={'flex'} justifyContent={'center'}>
                     <BuyMeACofee isMobile={isMobile} />
                 </Box>
             </Container>
-            <Container maxWidth={maxWidth} sx={{ minHeight: '80vh' }}>
+            <Container maxWidth={maxWidth} sx={{ minHeight: '80vh', ...style }}>
                 {children}
             </Container>
             {showFooter ? <Footer /> : null}
