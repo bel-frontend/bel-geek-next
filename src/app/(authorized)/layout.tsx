@@ -31,12 +31,14 @@ function LayoutAuth({
         <div
             style={{
                 backgroundColor: 'rgb(245, 245, 245)',
+                minHeight: '100vh',
             }}
         >
             <Layout
                 params={{ ...props?.params }}
                 styles={{
                     bgColour: 'transparent',
+                    minHeight: '100vh',
                 }}
                 maxWidth="xl"
             >

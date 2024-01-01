@@ -69,7 +69,6 @@ export default function Profile({ history }: any) {
                 },
                 null,
             );
-            console.log(articleWithMostLikes);
 
             return {
                 preparedArticles: articles || [],
@@ -80,7 +79,6 @@ export default function Profile({ history }: any) {
             };
         }, [articles]);
 
-    console.log(likes, preparedArticles);
 
     return (
         <Box

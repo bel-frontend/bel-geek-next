@@ -2,9 +2,10 @@ import React from 'react';
 import { MetaData } from '@/components/MetaData';
 import { Box } from '@mui/material';
 import { MD } from '@/components';
-import EditLink from '../EditLink';
-import Link from 'next/link';
 
+import EditLink from '@/components/EditLink';
+
+import Link from 'next/link';
 import Chip from '@mui/material/Chip';
 
 import style from './style.module.scss';

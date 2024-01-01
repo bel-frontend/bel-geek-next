@@ -7,3 +7,4 @@ export * from './Snackbar';
 export * from './Popup';
 export * from './GridGenerator';
 export * from './Card';
+export { default as EditLink } from './EditLink';

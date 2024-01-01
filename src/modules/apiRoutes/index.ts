@@ -24,7 +24,6 @@ export const getDataWrapper = async (
                     return true;
                 },
                 onFailure: (error: any) => {
-                    if (onFailure) onFailure(error);
                     reject(error);
                     return true;
                 },
@@ -32,9 +31,15 @@ export const getDataWrapper = async (
         );
     });
 
-    return promise.then((data: any) => {
-        const res = useSelector(resultSelector);
+    return promise
+        .then((data: any) => {
+            const res = useSelector(resultSelector);
 
-        return res;
-    });
+            return res;
+        })
+        .catch((error: any) => {
+            if (typeof onFailure === 'function') onFailure(error);
+            // throw error;
+            return null;
+        });
 };

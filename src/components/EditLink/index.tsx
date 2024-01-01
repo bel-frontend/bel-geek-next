@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
 import { Box } from '@mui/material';
-const EditLink = ({ meta, id }: any) => {
+const EditLink = ({ meta, id }: { meta: { user_id: string }; id: string }) => {
     const currentUser: any = useSelector(getCurrentUserSelector);
     const userIsAuth = useSelector(currentUserIsAuth);
     const { role } = currentUser;

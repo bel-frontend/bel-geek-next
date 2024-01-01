@@ -7,10 +7,10 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export const MyArtickles = ({ articles = [] }: any) => {
     const router = useRouter();
-
     return (
         <Box sx={{ maxWidth: '100%', maxHeight: '100%', overflowY: 'auto' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -45,7 +45,15 @@ export const MyArtickles = ({ articles = [] }: any) => {
                                     }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {meta?.title}
+                                        <Link
+                                            href={
+                                                meta?.isActive
+                                                    ? `/article/${id}`
+                                                    : `/draft/${id}`
+                                            }
+                                        >
+                                            {meta?.title}
+                                        </Link>
                                     </TableCell>
                                     <TableCell align="right">
                                         {meta?.isActive ? null : (
@@ -55,9 +63,6 @@ export const MyArtickles = ({ articles = [] }: any) => {
                                             />
                                         )}
                                     </TableCell>
-                                    {/* <TableCell align="right">
-                                        <Button color="error">Выдаліць</Button>
-                                    </TableCell> */}
                                     <TableCell align="right">
                                         <Button
                                             size="small"
