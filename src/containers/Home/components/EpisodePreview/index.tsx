@@ -11,8 +11,8 @@ import Chip from '@mui/material/Chip';
 import style from './style.module.scss';
 
 export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
-    const { meta, content, artickle_id, likes } = article;
-    const url = artickle_id ? `/article/${artickle_id}` : '/';
+    const { meta, content, id, likes } = article;
+    const url = id ? `/article/${id}` : '/';
 
     return meta ? (
         <article className="episode box">
@@ -39,7 +39,7 @@ export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
                                 />
                             ) : null}
                         </h2>
-                        <EditLink meta={meta} id={artickle_id} />
+                        <EditLink meta={meta} id={id} />
                     </Box>
                     <div className="content">
                         <MD>{content}</MD>
@@ -49,7 +49,7 @@ export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
                 <MetaData
                     meta={{ ...meta }}
                     likes={likes}
-                    articleId={artickle_id}
+                    articleId={id}
                     url={url}
                 />
             </>

@@ -94,7 +94,13 @@ export default async function Image({
                         </switch>
                     </g>
                 </svg>
-                <p style={{ fontSize: 24, fontWeight: 700 }}>
+                <p
+                    style={{
+                        fontSize: 24,
+                        fontWeight: 700,
+                        textAlign: 'center',
+                    }}
+                >
                     {title ? title : alt}
                 </p>
             </div>
