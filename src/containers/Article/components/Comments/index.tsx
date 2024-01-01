@@ -11,6 +11,7 @@ import {
     removeScoreToCommentsRequest,
 } from '@/modules/comments';
 import { currentUserIsAuth } from '@/modules/auth';
+import { checkPermission } from '@/utils/permissions';
 
 import { USER_ROLES } from '@/constants/users';
 import { AddComment } from './AddComment';
@@ -37,15 +38,16 @@ export const Comments = ({ articleId }: any) => {
     const userIsAuth = useSelector(currentUserIsAuth);
     const currentUser: any = useSelector(getCurrentUserSelector);
     const dispatch = useDispatch();
+    const currntUserIsAdmin = checkPermission(currentUser, [
+        USER_ROLES.ADMIN,
+        USER_ROLES.SUPERADMIN,
+    ]);
 
     React.useEffect(() => {
         dispatch(getCommentsRequest({ artickle_id: articleId }));
     }, [articleId]);
 
     const comments: any[] = useSelector(getCommentsSelector);
-    const currntUserIsAdmin =
-        currentUser.role === USER_ROLES.SUPERADMIN ||
-        currentUser.role === USER_ROLES.ADMIN;
 
     const onSuccess = () => {
         dispatch(getCommentsRequest({ artickle_id: articleId }));

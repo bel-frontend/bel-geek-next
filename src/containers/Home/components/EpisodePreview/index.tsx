@@ -3,26 +3,16 @@ import { MetaData } from '@/components/MetaData';
 import { Box } from '@mui/material';
 import { MD } from '@/components';
 
+import { ArticleInterface } from '@/constants/types/article';
 import EditLink from '@/components/EditLink';
 
 import Link from 'next/link';
 import Chip from '@mui/material/Chip';
-
 import style from './style.module.scss';
 
-export const EpisodePreview = ({
-    meta,
-    id,
-    content,
-    userIsAuth,
-    isActive,
-    likes = 0,
-    currentUser,
-}: any) => {
-    // const { ref, entry } = useInView({ threshold: 0 });
-    const url = id ? `/article/${id}` : '/';
-    const { user_id } = meta;
-    const { role } = currentUser;
+export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
+    const { meta, content, artickle_id, likes } = article;
+    const url = artickle_id ? `/article/${artickle_id}` : '/';
 
     return (
         <article className="episode box">
@@ -37,11 +27,7 @@ export const EpisodePreview = ({
                     >
                         <h2 className="episode__title">
                             <Link
-                                className={
-                                    userIsAuth && !isActive
-                                        ? style.deactivatedLink
-                                        : style.link
-                                }
+                                className={style.link}
                                 href={meta ? url : '/'}
                             >
                                 {meta.title}
@@ -53,7 +39,7 @@ export const EpisodePreview = ({
                                 />
                             ) : null}
                         </h2>
-                        <EditLink meta={meta} id={id} />
+                        <EditLink meta={meta} id={artickle_id} />
                     </Box>
                     <div className="content">
                         <MD>{content}</MD>
@@ -63,7 +49,7 @@ export const EpisodePreview = ({
                 <MetaData
                     meta={{ ...meta }}
                     likes={likes}
-                    articleId={id}
+                    articleId={artickle_id}
                     url={url}
                 />
             </>

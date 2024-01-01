@@ -1,7 +1,8 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-import { EpisodePreview } from './components/EpisodePreview/';
+import { ArticleInterface } from '@/constants/types/article';
+import { UserInterface } from '@/constants/types/user';
 import { USER_ROLES } from '@/constants/users';
 import {
     getArticklesRequest,
@@ -10,7 +11,10 @@ import {
     getPinnedArticlesRequest,
 } from '@/modules/artickles';
 import { getDataWrapper } from '@/modules/apiRoutes';
+import { checkUserAccess } from '@/modules/auth';
+
 import Pagination from './components/Pagination';
+import { EpisodePreview } from './components/EpisodePreview/';
 
 import style from './style.module.scss';
 
@@ -18,24 +22,21 @@ const ARTICLES_PER_PAGE = 10;
 const DEFAULT_PAGE_NUM = 1;
 
 const Home = async ({
-    route: { userIsAuth },
     searchParams: {
         searchText,
         page = DEFAULT_PAGE_NUM,
         size = ARTICLES_PER_PAGE,
     },
 }: {
-    route: { userIsAuth?: boolean };
     [key: string]: any;
 }) => {
-    const currentUser: any = {
-        role: USER_ROLES.SUPERADMIN,
-        user_id: 1,
-        user_name: 'test',
-        user_email: 'test',
-        user_avatar: {},
-    };
-    const { articles, total } = await getDataWrapper(
+    const {
+        articles,
+        total,
+    }: {
+        articles: ArticleInterface[];
+        total: number;
+    } = await getDataWrapper(
         {
             requestAction: getArticklesRequest,
             resultSelector: getArticklesSelector,
@@ -51,14 +52,7 @@ const Home = async ({
         { search: searchText },
     );
 
-    const preparedArticles = (() => {
-        return ([...pinnedArticles, ...articles] || []).filter(
-            (i: any) =>
-                i.isActive ||
-                (!i.isActive && currentUser?.user_id === i?.meta?.user_id) ||
-                currentUser.role === USER_ROLES.SUPERADMIN,
-        );
-    })();
+    const preparedArticles = [...pinnedArticles, ...articles] || [];
 
     return (
         <>
@@ -74,34 +68,9 @@ const Home = async ({
 
                 {preparedArticles &&
                     preparedArticles.map(
-                        (
-                            {
-                                content,
-                                meta,
-                                id,
-                                isActive,
-                                likes,
-                            }: {
-                                content: string;
-                                meta: any;
-                                id: any;
-                                isActive: boolean;
-                                likes: any;
-                            },
-                            index: number,
-                        ) =>
-                            meta ? (
-                                <EpisodePreview
-                                    currentUser={currentUser}
-                                    key={index}
-                                    userIsAuth={userIsAuth}
-                                    content={content}
-                                    meta={meta}
-                                    id={id}
-                                    isActive={isActive}
-                                    likes={likes}
-                                />
-                            ) : null,
+                        (i: ArticleInterface, index: number) => (
+                            <EpisodePreview key={index} article={i} />
+                        ),
                     )}
                 <Pagination total={total} size={size} />
             </Box>

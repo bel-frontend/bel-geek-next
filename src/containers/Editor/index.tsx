@@ -18,6 +18,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useRouter } from 'next/navigation';
 
 import { USER_ROLES } from '@/constants/users';
+import { checkUserAccess } from '@/modules/auth';
 
 import { MD, UploadFile } from '@/components';
 
@@ -48,7 +49,11 @@ const Editor = ({ params: { id } }: { params: { id: number | string } }) => {
         deleteArticle,
     } = useHooks({ history, id });
 
-    const [mode, setMode] = React.useState(0);
+    const [mode, setMode] = React.useState('0');
+    const isAdmin = checkUserAccess(currentUser, [
+        USER_ROLES.ADMIN,
+        USER_ROLES.SUPERADMIN,
+    ]);
     // console.log(artickleData, currentUser);
 
     return (
@@ -161,7 +166,7 @@ const Editor = ({ params: { id } }: { params: { id: number | string } }) => {
                             }
                             label="Паказваць усім (артыкул будзе бачны для ўсіх карыстальнікаў)"
                         />
-                        {currentUser.role === USER_ROLES.SUPERADMIN ? (
+                        {isAdmin ? (
                             <FormControlLabel
                                 control={
                                     <Switch

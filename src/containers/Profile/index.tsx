@@ -1,20 +1,22 @@
 'use client';
 import * as React from 'react';
+import Link from 'next/link';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Cell, GridGenerator, Card } from '@/components';
-import { MyArtickles } from './components/MyArtickles';
-import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import {
     getMyArticklesSelector,
     getMyArticlesRequest,
 } from '@/modules/artickles';
 import { getCurrentUserSelector } from '@/modules/auth';
-import Link from 'next/link';
+import { MyArtickles } from './components/MyArtickles';
+import { checkPermission } from '@/utils/permissions';
+import { UserInterface } from '@/constants/types/user';
+import { USER_ROLES } from '@/constants/users';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -50,9 +52,9 @@ function a11yProps(index: number) {
 }
 
 export default function Profile({ history }: any) {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState<string | number>(0);
     const { articles, total }: any = useSelector(getMyArticklesSelector);
-    const currentUser: any = useSelector(getCurrentUserSelector);
+    const currentUser: UserInterface = useSelector(getCurrentUserSelector);
 
     const dispatch = useDispatch();
     React.useEffect(() => {
@@ -79,6 +81,17 @@ export default function Profile({ history }: any) {
             };
         }, [articles]);
 
+    const handleChange = (
+        event: React.SyntheticEvent,
+        newValue: string | number,
+    ) => {
+        setValue(newValue);
+    };
+
+    const isAdmin = checkPermission(currentUser, [
+        USER_ROLES.ADMIN,
+        USER_ROLES.SUPERADMIN,
+    ]);
 
     return (
         <Box
@@ -129,20 +142,37 @@ export default function Profile({ history }: any) {
                             maxHeight: '100%',
                         }}
                     >
-                        <Typography
-                            variant="h5"
-                            // sx={{
-                            //     position: 'sticky',
-                            //     top: 0,
-                            //     backgroundColor: 'white',
-                            // }}
-                        >
-                            Мае артыкулы
-                        </Typography>
-                        <MyArtickles
-                            history={history}
-                            articles={preparedArticles}
-                        />
+                        {isAdmin ? (
+                            <Box
+                                sx={{
+                                    paddingBottom: 2,
+                                }}
+                            >
+                                <Tabs
+                                    value={value}
+                                    onChange={handleChange}
+                                    aria-label="basic tabs example"
+                                    textColor="secondary"
+                                    indicatorColor="secondary"
+                                >
+                                    <Tab
+                                        label="Мае артыкулы"
+                                        {...a11yProps(0)}
+                                    />
+                                    <Tab
+                                        label="Усе артыкулы "
+                                        {...a11yProps(1)}
+                                    />
+                                </Tabs>
+                            </Box>
+                        ) : null}
+                        <Box>
+                            <Typography variant="h5">Мае артыкулы</Typography>
+                            <MyArtickles
+                                history={history}
+                                articles={preparedArticles}
+                            />
+                        </Box>
                     </Card>
                 </Cell>
             </GridGenerator>
