@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ArticleInterface } from '@/constants/types/article';
 
 export const MyArtickles = ({ articles = [] }: any) => {
     const router = useRouter();
@@ -24,14 +25,7 @@ export const MyArtickles = ({ articles = [] }: any) => {
                                 isActive,
                                 likes,
                                 title,
-                            }: {
-                                content: string;
-                                meta: any;
-                                id: any;
-                                isActive: boolean;
-                                likes: any;
-                                title: string;
-                            },
+                            }: ArticleInterface,
                             index: number,
                         ) =>
                             meta ? (

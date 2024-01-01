@@ -11,12 +11,15 @@ import { Cell, GridGenerator, Card } from '@/components';
 import {
     getMyArticklesSelector,
     getMyArticlesRequest,
+    getUnactiveArticklesSelector,
+    getUnactiveArticklesRequest,
 } from '@/modules/artickles';
 import { getCurrentUserSelector } from '@/modules/auth';
 import { MyArtickles } from './components/MyArtickles';
 import { checkPermission } from '@/utils/permissions';
 import { UserInterface } from '@/constants/types/user';
 import { USER_ROLES } from '@/constants/users';
+import { ArticleInterface } from '@/constants/types/article';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -93,6 +96,17 @@ export default function Profile({ history }: any) {
         USER_ROLES.SUPERADMIN,
     ]);
 
+    React.useEffect(() => {
+        if (isAdmin) {
+            dispatch(getUnactiveArticklesRequest());
+        }
+    }, []);
+
+    const { articles: unactiveArticles = [] } = useSelector<
+        unknown,
+        { articles: ArticleInterface[] }
+    >(getUnactiveArticklesSelector);
+
     return (
         <Box
             sx={{
@@ -160,17 +174,25 @@ export default function Profile({ history }: any) {
                                         {...a11yProps(0)}
                                     />
                                     <Tab
-                                        label="Усе артыкулы "
+                                        label="Усе  чарнавікі"
                                         {...a11yProps(1)}
                                     />
                                 </Tabs>
                             </Box>
                         ) : null}
                         <Box>
-                            <Typography variant="h5">Мае артыкулы</Typography>
+                            <Typography variant="h5">
+                                {value === 1
+                                    ? `Чарнавікі ўсіх аутараў (only admins)`
+                                    : `Мае артыкулы`}
+                            </Typography>
                             <MyArtickles
                                 history={history}
-                                articles={preparedArticles}
+                                articles={
+                                    value === 1
+                                        ? unactiveArticles
+                                        : preparedArticles
+                                }
                             />
                         </Box>
                     </Card>

@@ -31,6 +31,8 @@ export const REMOVE_LIKE_REQUEST = `${modules}/REMOVE_LIKE_REQUEST`;
 export const SEND_ERRORR_REQUEST = `${modules}/SEND_ERRORR_REQUEST`;
 export const DELETE_ARTICLE_REQUEST = `${modules}/DELETE_ARTICLE_REQUEST`;
 
+export const GET_UNACTIVE_ARTICKLES_REQUEST = `${modules}/GET_UNACTIVE_ARTICKLES_REQUEST`;
+
 export const AUTOSAVE_ARTICLE = `${modules}/AUTOSAVE_ARTICLE`;
 export const SAVE_ARTICLE_TO_STORE = `${modules}/SAVE_ARTICLE_TO_STORE`;
 export const CLEAR_AUTOSAVE_ARTICLE = `${modules}/CLEAR_AUTOSAVE_ARTICLE`;
@@ -58,6 +60,10 @@ export const searchArticle = createAction(SEARCH_ARTICLE);
 export const autoSaveArticle = createAction(AUTOSAVE_ARTICLE);
 export const clearAutoSaveArticle = createAction(CLEAR_AUTOSAVE_ARTICLE);
 
+export const getUnactiveArticklesRequest = actionCreator(
+    GET_UNACTIVE_ARTICKLES_REQUEST,
+);
+
 apiRoutes.add(GET_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
     url: `/artickles`,
     method: 'get',
@@ -78,6 +84,11 @@ apiRoutes.add(GET_ARTICKLES_PINNED_REQUEST, ({ ...params } = {}) => ({
 
 apiRoutes.add(GET_MY_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
     url: `/my-articles`,
+    method: 'get',
+    params: params,
+}));
+apiRoutes.add(GET_UNACTIVE_ARTICKLES_REQUEST, ({ ...params } = {}) => ({
+    url: `/unpublished-articles`,
     method: 'get',
     params: params,
 }));
@@ -161,3 +172,7 @@ export const getAutoSavedArtickleSelector = (state: any) =>
     state.autoSaveArtickle;
 
 export const getArticlesIdsSelector = apiSelector(GET_ARTICLES_IDS_REQUEST);
+
+export const getUnactiveArticklesSelector = apiSelector(
+    GET_UNACTIVE_ARTICKLES_REQUEST,
+);
