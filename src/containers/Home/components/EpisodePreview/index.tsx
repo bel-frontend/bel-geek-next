@@ -14,7 +14,7 @@ export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
     const { meta, content, artickle_id, likes } = article;
     const url = artickle_id ? `/article/${artickle_id}` : '/';
 
-    return (
+    return meta ? (
         <article className="episode box">
             <>
                 <div className="article">
@@ -30,7 +30,7 @@ export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
                                 className={style.link}
                                 href={meta ? url : '/'}
                             >
-                                {meta.title}
+                                {meta?.title}
                             </Link>
                             {meta?.isPinned ? (
                                 <Chip
@@ -54,5 +54,5 @@ export const EpisodePreview = ({ article }: { article: ArticleInterface }) => {
                 />
             </>
         </article>
-    );
+    ) : null;
 };
